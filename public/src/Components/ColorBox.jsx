@@ -18,6 +18,12 @@ class Box extends React.Component {
 
         return (
             <div className='Box-1' data-box={this.counter()} >
+                <table>
+                    <tr>
+                        <td>first block</td>
+                        <td>first block</td>
+                    </tr>
+                </table>
 
                 
             </div>

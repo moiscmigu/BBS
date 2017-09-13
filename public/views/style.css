@@ -1,18 +1,6 @@
-.Box-1 {
-    height: 7em;
-    width:7em;
-    background-color: red;
+.grid {
+    height: 10em;
+    width: 10em;
     border: 1px solid black;
-}
-
-.Box-2 {
-    height: 7em;
-    width:7em;
-    background-color: blue;
-    border: 1px solid black;
-}
-
-
-.box-container {
-    margin:3em;
+    padding:2em;
 }
