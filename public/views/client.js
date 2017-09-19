@@ -2,10 +2,9 @@ $(onReady)
 
 
 function onReady() {
-    console.log('onReadu');
 
-    $("#root").on('click', ".Box-1", () => {
-
-        $(this).data('box', "1").toggleClass('Box-2');
-    })
-}
+    $("#voteSearchInput").submit(function (e) {
+        e.preventDefault();
+        return false;
+    });//end of voteSearchInput
+}//end of onReady

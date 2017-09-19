@@ -26840,9 +26840,9 @@ var _reactDom = __webpack_require__(229);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(315);
+var _SearchVote = __webpack_require__(347);
 
-var _App2 = _interopRequireDefault(_App);
+var _SearchVote2 = _interopRequireDefault(_SearchVote);
 
 var _reactRedux = __webpack_require__(87);
 
@@ -26856,7 +26856,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var store = (0, _redux.createStore)(_Reducer2.default);
 
-_reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('root'));
+_reactDom2.default.render(_react2.default.createElement(
+    _reactRedux.Provider,
+    { store: store },
+    _react2.default.createElement(_SearchVote2.default, null)
+), document.getElementById('root'));
 
 /***/ }),
 /* 215 */
@@ -38965,67 +38969,7 @@ module.exports = ReactDOMInvalidARIAHook;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 315 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(25);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _Actions = __webpack_require__(316);
-
-var _reactRedux = __webpack_require__(87);
-
-var _redux = __webpack_require__(53);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var App = function (_React$Component) {
-    _inherits(App, _React$Component);
-
-    function App() {
-        _classCallCheck(this, App);
-
-        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-    }
-
-    _createClass(App, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'h1',
-                    null,
-                    'The same thign'
-                )
-            ); //end of return
-        } //end of render
-
-    }]);
-
-    return App;
-}(_react2.default.Component); //end of app
-
-exports.default = App;
-
-/***/ }),
+/* 315 */,
 /* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -39035,11 +38979,10 @@ exports.default = App;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var addToList = exports.addToList = function addToList(task, dueDate) {
+var userSearch = exports.userSearch = function userSearch(text) {
     var action = {
-        type: "ADD_TO_LIST",
-        task: task,
-        dueDate: dueDate
+        type: "VOTE_SEARCH",
+        text: text
     }; //end of action
 
     return action;
@@ -40398,58 +40341,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var calcDate = function calcDate(date) {
-    var newDate = (0, _moment2.default)(new Date(date)).fromNow();
-    return newDate;
-}; //end of calcDate
-
-var removeByIndex = function removeByIndex() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var index = arguments[1];
-
-    var reminder = state.filter(function (_, i) {
-        return i !== index;
-    });
-    return state.filter(function (_, i) {
-        return i !== index;
-    });
-};
-
-var removeAllTask = function removeAllTask() {
+var userSearchReducer = function userSearchReducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var action = arguments[1];
 
-    console.log('removing all task', action);
-}; //end of removeAllTask
-
-
-var addToListReducer = function addToListReducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-    var action = arguments[1];
-
-    var reminders = void 0;
-    state = (0, _sfcookies.read_cookie)('reminders');
 
     switch (action.type) {
-        case 'ADD_TO_LIST':
-            reminders = [].concat(_toConsumableArray(state), [{ task: action.task, dueDate: calcDate(action.dueDate) }]);
-            (0, _sfcookies.bake_cookie)('reminders', reminders);
-            return reminders;
-        case "REMOVE_FROM_LIST":
-            console.log("Removing from the list", action.index);
-            reminders = removeByIndex(state, action.index);
-            (0, _sfcookies.bake_cookie)('reminders', reminders);
-            return reminders;
-        case 'DELETE_ALL_TASK':
-            reminders = [];
-            return reminders;
+        case 'VOTE_SEARCH':
+
+            state = [].concat(_toConsumableArray(state), [action.text]);
+
+            return state;
+
         default:
             return state;
 
     } //end of switch statement
-};
+}; //end of userSearchReducer
 
-exports.default = addToListReducer;
+exports.default = userSearchReducer;
 
 /***/ }),
 /* 344 */
@@ -40822,6 +40732,131 @@ function read_cookie(name) {
 function delete_cookie(name) {
   document.cookie = [name, '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/; domain.', window.location.host.toString()].join('');
 }
+
+/***/ }),
+/* 347 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(25);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _index = __webpack_require__(316);
+
+var _reactRedux = __webpack_require__(87);
+
+var _redux = __webpack_require__(53);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SearchVote = function (_React$Component) {
+    _inherits(SearchVote, _React$Component);
+
+    function SearchVote(props) {
+        _classCallCheck(this, SearchVote);
+
+        var _this = _possibleConstructorReturn(this, (SearchVote.__proto__ || Object.getPrototypeOf(SearchVote)).call(this, props));
+
+        _this.state = {
+            userVoteAccessToken: ''
+        }; //end of this state
+
+
+        return _this;
+    } //end of contructor
+
+    _createClass(SearchVote, [{
+        key: 'handleVoteSearch',
+        value: function handleVoteSearch() {
+            console.log('this is the vote the user searched for', this);
+            this.props.userSearch(this.state.userVoteAccessToken);
+        } //end of handleVoteSearch
+
+
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'container' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-md-6 col-md-offset-3' },
+                        _react2.default.createElement(
+                            'h1',
+                            null,
+                            'Search For Votes'
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-md-4 col-md-offset-3' },
+                        _react2.default.createElement(
+                            'form',
+                            { action: '', className: 'search-form', id: 'voteSearchInput', onSubmit: this.handleVoteSearch.bind(this) },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'form-group has-feedback' },
+                                _react2.default.createElement('input', {
+                                    type: 'text',
+                                    className: 'form-control',
+                                    name: 'search', id: 'search',
+                                    placeholder: 'Enter access token',
+                                    onChange: function onChange(event) {
+                                        return _this2.setState({ userVoteAccessToken: event.target.value });
+                                    }
+                                }),
+                                _react2.default.createElement('span', { className: 'glyphicon glyphicon-search form-control-feedback' })
+                            )
+                        )
+                    )
+                )
+            ); //end of return
+        } //end of render
+
+    }]);
+
+    return SearchVote;
+}(_react2.default.Component); //end of app
+
+
+function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({
+        userSearch: _index.userSearch
+    }, dispatch);
+}
+
+function mapStateToProps(state) {
+    return {
+        search: state
+    };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchVote);
 
 /***/ })
 /******/ ]);

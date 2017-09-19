@@ -1,8 +1,7 @@
-export const addToList = (task, dueDate) => {
+export const userSearch = (text) => {
     const action = {
-        type: "ADD_TO_LIST",
-        task,
-        dueDate
+        type: "VOTE_SEARCH",
+        text
     };//end of action
 
     return action;
