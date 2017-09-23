@@ -24,7 +24,7 @@ class NewVote extends React.Component {
         let votesInputValue = document.getElementsByName('voteInput')
 
         for(let v = 0; v < votesInputValue.length; v++) {
-            votes.push(votesInputValue[v].value)
+            votes.push({vote:votesInputValue[v].value, like:0});
         }//end of for loop
 
         console.log('the final botes', votes)

@@ -26966,7 +26966,7 @@ var NewVote = function (_React$Component) {
             var votesInputValue = document.getElementsByName('voteInput');
 
             for (var v = 0; v < votesInputValue.length; v++) {
-                votes.push(votesInputValue[v].value);
+                votes.push({ vote: votesInputValue[v].value, like: 0 });
             } //end of for loop
 
             console.log('the final botes', votes);
