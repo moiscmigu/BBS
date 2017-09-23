@@ -2,10 +2,7 @@ import React from 'react';
 import {newVoteAction} from '../Actions/index';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-
-
-
-
+import axios from 'axios';
 
 
 
@@ -22,7 +19,30 @@ class NewVote extends React.Component {
 
     addNewVote() {  
         
-        console.log('input with the right name', document.getElementsByName('voteInput')[0].value)
+        let votes = [];
+
+        let votesInputValue = document.getElementsByName('voteInput')
+
+        for(let v = 0; v < votesInputValue.length; v++) {
+            votes.push(votesInputValue[v].value)
+        }//end of for loop
+
+        console.log('the final botes', votes)
+        
+        let categories = {
+            title:this.state.title,
+            categories: votes
+        };//enf of categories
+
+        
+        //posting vote to the data base
+        axios.post('/votes', categories).then(res => {
+            console.log('back from the server with', res)
+        });//end of axios
+        
+
+
+
         
 
 
@@ -46,19 +66,21 @@ class NewVote extends React.Component {
                     {
                         arr.map((i, id) => {
                             return (
-                                <div className ='card=block' key={id}>
-                                    <input type="text" name='voteInput'  placeholder='Enter A category'/>
+                                <div className="card w-75 card-block" key={id}>
+                                    <div className="card-block">
+                                        <input type="text" placeholder='Enter a category' name='voteInput'/>
+                                        
+                                    </div>
                                 </div>
+                              
+                             
                                
                             );
-                        }) 
+                        })//end of map 
                     }
                 </div>
-            );
-        }
-
-
-       
+            );///end of retrun  
+        }//end of else statement       
     }//end of displayNumOfBotes
 
     render(){
@@ -78,12 +100,12 @@ class NewVote extends React.Component {
                                 <input type="text" onChange={event => this.setState({title:event.target.value})}  placeholder='The title' />
                                 <input type="number" onChange={event => this.setState({numOfVotes:Number(event.target.value)}) } placeholder='How Many Categories?' />
                                 {this.displayNumOfVotes()}
-                                <button onClick={this.addNewVote.bind(this)} >Enter</button>
+
                                 
                                 
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" className='btn btn-success'  data-dismiss="modal" onClick={this.addNewVote.bind(this)}>Submit</button>
                             </div>
                         </div>
                     
