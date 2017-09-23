@@ -1,24 +1,11 @@
-import dateDiff from 'date-diff';
-import moment from 'moment';
-import {bake_cookie, read_cookie} from 'sfcookies';
+import { combineReducers } from 'redux';
+
+import searchReducer from './searchReducer';
+import addNewVoteReducer from './addNewVoteReducer';
 
 
-
-
-const userSearchReducer = (state=[], action) => {
+export default combineReducers({
+    searchReducer,
+    addNewVoteReducer
     
-    switch (action.type) {
-        case 'VOTE_SEARCH':
-            
-            state = [...state, action.text];
-
-            return state;
-
-        
-        default:
-            return state;
-
-    } //end of switch statement
-}//end of userSearchReducer
-
-export default userSearchReducer;
+});
