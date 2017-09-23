@@ -1,13 +1,22 @@
-    let express = require('express'),
-
-    app = express()
-    path = require('path');
+let express = require('express'),
+    app = express(),
+    path = require('path'), 
+    bodyParser = require('body-parser');
 
 
 let port = process.env.PORT || 3000;
 
 //USES
+let votes = require('./routes/votes')
+
+
+
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+
+app.use('/votes', votes)
+
 
 //ROUTERS
 app.get('/', (req, res) => {

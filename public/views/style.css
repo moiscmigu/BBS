@@ -1,8 +1,9 @@
 .card-block {
-    border: 1px solid black;
     display: inline-block;
-    width: 8em;
-    height: 8em;
-    overflow: scroll;
-    margin: 0 0.5em 0.3em 0;
+    overflow: wrap;
+    margin: 1em 0.5em 0.3em 0;
+}
+
+.card-block input{
+    outline: none;
 }
