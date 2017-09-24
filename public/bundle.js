@@ -10839,7 +10839,7 @@ module.exports = getHostComponentFromComposite;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.userSearchAction = undefined;
+exports.sendUserVoteAction = exports.userSearchAction = undefined;
 
 var _axios = __webpack_require__(239);
 
@@ -10852,6 +10852,17 @@ var userSearchAction = exports.userSearchAction = function userSearchAction(text
     return function (dispatch) {
         request.then(function (data) {
             dispatch({ type: "VOTE_SEARCH", payload: data });
+        });
+    };
+}; //end of assTOList
+
+var sendUserVoteAction = exports.sendUserVoteAction = function sendUserVoteAction(vote) {
+    console.log('this is the vote', vote);
+    var request = _axios2.default.put('/votes', { card: vote });
+    return function (dispatch) {
+        request.then(function (data) {
+            console.log('back from the server with', data);
+            dispatch({ type: "NOTHING_YET", payload: data });
         });
     };
 }; //end of assTOList
@@ -28062,46 +28073,77 @@ var ShowVotes = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (ShowVotes.__proto__ || Object.getPrototypeOf(ShowVotes)).call(this, props));
 
-        _this.state = {}; //end of this state
+        _this.state = {
+            voteCounter: 0
+        }; //end of this state
 
         return _this;
     } //end of contructor
 
     _createClass(ShowVotes, [{
         key: 'start',
-        value: function start() {
-            console.log('startingg...', this.props.voteSearched.searchReducer);
-        } //end of start
+        value: function start() {} //end of start
+
+    }, {
+        key: 'handleLike',
+        value: function handleLike(arr, card) {
+            if (this.state.voteCounter !== 0) {
+                (0, _bootstrapSweetalert2.default)('Vote Limit Reached', '', 'warning');
+                return false;
+            } else {
+
+                var addVote = arr.votes[card];
+
+                addVote.like++;
+
+                this.props.sendUserVoteAction(arr);
+                this.setState({ voteCounter: 1 });
+                return addVote;
+            }
+        } //end of handleLike
 
     }, {
         key: 'showCategories',
         value: function showCategories() {
+            var _this2 = this;
+
             var data = this.props.voteSearched.searchReducer;
-            var voteCards = data[data.length - 1].voteSearched[0].votes;
+            data = data[data.length - 1].voteSearched;
 
             if (this.props.voteSearched.searchReducer.length === 0) {
                 return false;
             } else {
                 return _react2.default.createElement(
                     'div',
-                    { className: 'card text-right' },
-                    voteCards.map(function (card, id) {
-                        console.log('in the loop', card);
-                        return _react2.default.createElement(
-                            'div',
-                            { className: 'card-block', key: id },
-                            _react2.default.createElement(
-                                'h4',
-                                { className: 'card-title' },
-                                card.vote
-                            ),
-                            _react2.default.createElement(
-                                'button',
-                                { className: 'btn btn-warning' },
-                                'Likes: ',
-                                card.like
-                            )
-                        );
+                    null,
+                    data.map(function (v, id) {
+
+                        {
+                            return v.votes.map(function (card, cardId) {
+
+                                return _react2.default.createElement(
+                                    'div',
+                                    { className: 'card' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'card-block' },
+                                        _react2.default.createElement(
+                                            'h1',
+                                            null,
+                                            card.vote
+                                        ),
+                                        _react2.default.createElement(
+                                            'button',
+                                            { className: 'btn btn-warning', onClick: function onClick() {
+                                                    return _this2.handleLike(v, cardId);
+                                                } },
+                                            'Votes: ',
+                                            card.like
+                                        )
+                                    )
+                                );
+                            });
+                        }
                     })
                 ); //end of return
             }
@@ -28137,7 +28179,8 @@ var ShowVotes = function (_React$Component) {
 
 function mapDispatchToProps(dispatch) {
     return (0, _redux.bindActionCreators)({
-        userSearchAction: _index.userSearchAction
+        userSearchAction: _index.userSearchAction,
+        sendUserVoteAction: _index.sendUserVoteAction
     }, dispatch);
 }
 

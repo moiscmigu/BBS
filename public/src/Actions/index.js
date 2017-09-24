@@ -9,5 +9,16 @@ export const userSearchAction = (text) => {
     };
 };//end of assTOList
 
+export const sendUserVoteAction = (vote) => {
+    console.log('this is the vote', vote);
+    const request = axios.put('/votes',  {card:vote});
+    return (dispatch) => {
+        request.then(data => {
+            console.log('back from the server with', data)
+            dispatch({type:"NOTHING_YET", payload:data});
+        });
+    };
+};//end of assTOList
+
 
 

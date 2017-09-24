@@ -44,10 +44,11 @@ router.get('/:search' , (req, res) => {
             res.status(200).send(vote);
         }
     });
+});//end of get
 
-    
-
-
+router.put('/' , (req, res) => {
+    console.log('PUT URL HIT', req.body);
+    res.send(200);
 });//end of get
 
 

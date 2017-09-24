@@ -1,5 +1,5 @@
 import React from 'react';
-import {userSearchAction} from '../Actions/index';
+import {userSearchAction,sendUserVoteAction } from '../Actions/index';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import swal from 'bootstrap-sweetalert';
@@ -15,38 +15,68 @@ class ShowVotes extends React.Component {
         super(props)
 
         this.state = {
-
+            voteCounter:0
         };//end of this state
 
     }//end of contructor
 
     start() {
-        console.log('startingg...', this.props.voteSearched.searchReducer);
 
-      
     }//end of start
+
+    handleLike(arr, card) {
+        if(this.state.voteCounter !== 0 ) {
+            swal(
+                'Vote Limit Reached',
+                '',
+                'warning'
+              )
+            return false;
+        } else {
+
+            let addVote = arr.votes[card];
+
+            addVote.like++
+
+            this.props.sendUserVoteAction(arr);
+            this.setState({voteCounter:1});
+            return addVote;
+        }
+        
+
+    }//end of handleLike
 
     showCategories() {
         let data = this.props.voteSearched.searchReducer;
-        let voteCards =  data[data.length -1].voteSearched[0].votes
+        data =  data[data.length -1].voteSearched;
+
+
 
 
         if(this.props.voteSearched.searchReducer.length === 0) {
             return false; 
         } else {
             return (
-                <div className="card text-right" >
+                <div>
                     {
-                        voteCards.map((card, id) => {
-                            console.log('in the loop', card)
-                            return (
-                                <div className="card-block" key={id}>
-                                    <h4 className="card-title">{card.vote}</h4>
+                        data.map((v, id) => {
 
-                                    <button className="btn btn-warning">Likes: {card.like}</button>
-                                </div>
-                            );
+                            {
+                                return v.votes.map((card, cardId) => {
+
+                                    return (
+                                        <div className="card" >
+                                            <div className="card-block">
+                                                <h1>{card.vote}</h1>
+                                                <button className='btn btn-warning' onClick={() => this.handleLike(v, cardId)} >Votes: {card.like}</button>
+                                            </div>
+                                      </div>
+                                        
+                                    )
+                                })
+                            }
                         })
+                        
                     }
                    
                 </div>
@@ -66,6 +96,7 @@ class ShowVotes extends React.Component {
                     {this.start()}
                     <h1>{this.props.voteSearched.searchReducer[0].voteSearched[0].title}</h1>
                     {this.showCategories()}
+                    
 
                     
                 </div>
@@ -78,7 +109,8 @@ class ShowVotes extends React.Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        userSearchAction
+        userSearchAction,
+        sendUserVoteAction
     },
      dispatch)
 }
