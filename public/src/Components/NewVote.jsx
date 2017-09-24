@@ -38,6 +38,19 @@ class NewVote extends React.Component {
         //posting vote to the data base
         axios.post('/votes', categories).then(res => {
             console.log('back from the server with', res)
+            if(res.status === 200) {
+                swal(
+                    'Your Access token is ' + res.data,
+                    'Vote Created',
+                    'success'
+                  )
+            } else {
+                swal(
+                    'Error',
+                    'Your Vote was not created',
+                    'error'
+                  )
+            }
         });//end of axios
         
 

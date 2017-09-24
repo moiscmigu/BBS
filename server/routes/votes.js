@@ -11,14 +11,7 @@ let express = require('express'),
 
     
 router.post('/', (req, res) => {
-    console.log('req.body', req.body.categories)
-    var token ='';
-
-
-
-    
-
-
+    let token ='';
     rtg.generateKey({
         len: 10, // Generate 16 characters or bytes of data 
         string: true, // Output keys as a hex string 
@@ -35,11 +28,27 @@ router.post('/', (req, res) => {
             res.status(200).send(key);
     
     });
+}); //end of post
+
+router.get('/:search' , (req, res) => {
+    let search = req.params.search
+    console.log('votes url hit', search);
+
+    db.find({'token' : new RegExp(search, 'i')}, function(err, vote) {
+        if (err) {
+            console.log('err', err);
+            res.send(500);
+        }
+        else {
+            console.log('search was succesful', vote);
+            res.status(200).send(vote);
+        }
+    });
 
     
 
 
-}); //end of post
+});//end of get
 
 
 module.exports = router;

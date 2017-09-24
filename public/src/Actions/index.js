@@ -1,19 +1,13 @@
+import axios from 'axios';
+
 export const userSearchAction = (text) => {
-    const action = {
-        type: "VOTE_SEARCH",
-        text
-    };//end of action
-
-    return action;
+    const request = axios.get('/votes/' + text, {search:text});
+    return (dispatch) => {
+        request.then(data => {
+            dispatch({type:"VOTE_SEARCH", payload:data});
+        });
+    };
 };//end of assTOList
 
-export const newVoteAction = (voteOption) => {
 
-    const action = {
-        type: "ADD_NEW_VOTE",
-        payload:voteOption
-    };//end of action
-
-    return action;
-};//end of assTOList
 

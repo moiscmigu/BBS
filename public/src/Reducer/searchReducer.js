@@ -9,7 +9,9 @@ const userSearchReducer = (state=[], action) => {
     
     switch (action.type) {
         case 'VOTE_SEARCH':
-            state = [...state, action.text];
+            let data = action.payload.data;
+            state = [...state, {voteSearched:data}];
+            console.log('this is the state that i am returning', state)       
             return state;   
                
         default:

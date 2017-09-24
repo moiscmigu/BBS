@@ -10839,23 +10839,21 @@ module.exports = getHostComponentFromComposite;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.userSearchAction = undefined;
+
+var _axios = __webpack_require__(239);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var userSearchAction = exports.userSearchAction = function userSearchAction(text) {
-    var action = {
-        type: "VOTE_SEARCH",
-        text: text
-    }; //end of action
-
-    return action;
-}; //end of assTOList
-
-var newVoteAction = exports.newVoteAction = function newVoteAction(voteOption) {
-
-    var action = {
-        type: "ADD_NEW_VOTE",
-        payload: voteOption
-    }; //end of action
-
-    return action;
+    var request = _axios2.default.get('/votes/' + text, { search: text });
+    return function (dispatch) {
+        request.then(function (data) {
+            dispatch({ type: "VOTE_SEARCH", payload: data });
+        });
+    };
 }; //end of assTOList
 
 /***/ }),
@@ -11974,21 +11972,29 @@ var _SearchVote = __webpack_require__(206);
 
 var _SearchVote2 = _interopRequireDefault(_SearchVote);
 
+var _NewVote = __webpack_require__(238);
+
+var _NewVote2 = _interopRequireDefault(_NewVote);
+
+var _ShowVotes = __webpack_require__(259);
+
+var _ShowVotes2 = _interopRequireDefault(_ShowVotes);
+
 var _reactRedux = __webpack_require__(53);
 
 var _redux = __webpack_require__(26);
+
+var _reduxThunk = __webpack_require__(258);
+
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
 var _Reducer = __webpack_require__(235);
 
 var _Reducer2 = _interopRequireDefault(_Reducer);
 
-var _NewVote = __webpack_require__(238);
-
-var _NewVote2 = _interopRequireDefault(_NewVote);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)(_Reducer2.default);
+var store = (0, _redux.createStore)(_Reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 _reactDom2.default.render(_react2.default.createElement(
     _reactRedux.Provider,
@@ -12008,6 +12014,15 @@ _reactDom2.default.render(_react2.default.createElement(
                 'div',
                 { className: 'col-md-3' },
                 _react2.default.createElement(_NewVote2.default, null)
+            )
+        ),
+        _react2.default.createElement(
+            'div',
+            { className: 'row' },
+            _react2.default.createElement(
+                'div',
+                { className: 'col-md-12' },
+                _react2.default.createElement(_ShowVotes2.default, null)
             )
         )
     )
@@ -24163,9 +24178,7 @@ var SearchVote = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (SearchVote.__proto__ || Object.getPrototypeOf(SearchVote)).call(this, props));
 
         _this.state = {
-            userVoteAccessToken: '',
-            vote: {},
-            handleCardNum: ''
+            search: String
 
         }; //end of this state
 
@@ -24175,14 +24188,11 @@ var SearchVote = function (_React$Component) {
 
     _createClass(SearchVote, [{
         key: 'handleVoteSearch',
-        value: function handleVoteSearch() {} //end of handleVoteSearch
+        value: function handleVoteSearch() {
+            this.props.userSearchAction(this.state.search);
+        } //end of handleVoteSearch
 
 
-    }, {
-        key: 'handleVal',
-        value: function handleVal(id) {
-            console.log('handle vbal', id);
-        }
     }, {
         key: 'render',
         value: function render() {
@@ -24222,7 +24232,7 @@ var SearchVote = function (_React$Component) {
                                     name: 'search', id: 'search',
                                     placeholder: 'Enter access token',
                                     onChange: function onChange(event) {
-                                        return _this2.setState({ userVoteAccessToken: event.target.value });
+                                        return _this2.setState({ search: event.target.value });
                                     }
                                 }),
                                 _react2.default.createElement('span', { className: 'glyphicon glyphicon-search form-control-feedback' })
@@ -26860,7 +26870,9 @@ var userSearchReducer = function userSearchReducer() {
 
     switch (action.type) {
         case 'VOTE_SEARCH':
-            state = [].concat(_toConsumableArray(state), [action.text]);
+            var data = action.payload.data;
+            state = [].concat(_toConsumableArray(state), [{ voteSearched: data }]);
+            console.log('this is the state that i am returning', state);
             return state;
 
         default:
@@ -26980,6 +26992,11 @@ var NewVote = function (_React$Component) {
             //posting vote to the data base
             _axios2.default.post('/votes', categories).then(function (res) {
                 console.log('back from the server with', res);
+                if (res.status === 200) {
+                    swal('Your Access token is ' + res.data, 'Vote Created', 'success');
+                } else {
+                    swal('Error', 'Your Vote was not created', 'error');
+                }
             }); //end of axios
 
         } //end of addNewVote
@@ -27972,6 +27989,168 @@ module.exports = function spread(callback) {
   };
 };
 
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+function createThunkMiddleware(extraArgument) {
+  return function (_ref) {
+    var dispatch = _ref.dispatch,
+        getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        if (typeof action === 'function') {
+          return action(dispatch, getState, extraArgument);
+        }
+
+        return next(action);
+      };
+    };
+  };
+}
+
+var thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+
+exports['default'] = thunk;
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(21);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _index = __webpack_require__(89);
+
+var _reactRedux = __webpack_require__(53);
+
+var _redux = __webpack_require__(26);
+
+var _bootstrapSweetalert = __webpack_require__(234);
+
+var _bootstrapSweetalert2 = _interopRequireDefault(_bootstrapSweetalert);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ShowVotes = function (_React$Component) {
+    _inherits(ShowVotes, _React$Component);
+
+    function ShowVotes(props) {
+        _classCallCheck(this, ShowVotes);
+
+        var _this = _possibleConstructorReturn(this, (ShowVotes.__proto__ || Object.getPrototypeOf(ShowVotes)).call(this, props));
+
+        _this.state = {}; //end of this state
+
+        return _this;
+    } //end of contructor
+
+    _createClass(ShowVotes, [{
+        key: 'start',
+        value: function start() {
+            console.log('startingg...', this.props.voteSearched.searchReducer);
+        } //end of start
+
+    }, {
+        key: 'showCategories',
+        value: function showCategories() {
+            var data = this.props.voteSearched.searchReducer;
+
+            if (this.props.voteSearched.searchReducer.length === 0) {
+                return false;
+            } else {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'row' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-sm-6' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'card' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'card-block' },
+                                _react2.default.createElement(
+                                    'p',
+                                    { className: 'card-text' },
+                                    'With supporting text below as a natural lead-in to additional content.'
+                                ),
+                                _react2.default.createElement(
+                                    'a',
+                                    { href: '#', className: 'btn btn-primary' },
+                                    'Go somewhere'
+                                )
+                            )
+                        )
+                    )
+                ); //end of return
+            }
+        } //ennd of showCategories
+
+
+    }, {
+        key: 'render',
+        value: function render() {
+
+            if (this.props.voteSearched.searchReducer.length === 0) {
+                return false;
+            } else {
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    this.start(),
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        this.props.voteSearched.searchReducer[0].voteSearched[0].title
+                    ),
+                    this.showCategories()
+                ); //end of return
+            }
+        } //end of render
+
+    }]);
+
+    return ShowVotes;
+}(_react2.default.Component); //end of app
+
+
+function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({
+        userSearchAction: _index.userSearchAction
+    }, dispatch);
+}
+
+function mapStateToProps(state) {
+    return {
+        voteSearched: state
+    };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ShowVotes);
 
 /***/ })
 /******/ ]);

@@ -15,9 +15,7 @@ class SearchVote extends React.Component {
         super(props)
 
         this.state = {
-            userVoteAccessToken:'',
-            vote:{},
-            handleCardNum:''
+            search:String
 
         };//end of this state
 
@@ -25,15 +23,12 @@ class SearchVote extends React.Component {
     }//end of contructor
 
     handleVoteSearch() {
-
-
+        this.props.userSearchAction(this.state.search);
     }//end of handleVoteSearch
 
   
 
-    handleVal(id) {
-        console.log('handle vbal', id)
-    }
+ 
 
 
     render() {
@@ -54,7 +49,7 @@ class SearchVote extends React.Component {
                             className="form-control" 
                             name="search" id="search" 
                             placeholder="Enter access token"
-                            onChange = {event => this.setState({userVoteAccessToken:event.target.value})}
+                            onChange = {event => this.setState({search:event.target.value})}
                             />
                             <span className="glyphicon glyphicon-search form-control-feedback"  ></span>
                         </div>
