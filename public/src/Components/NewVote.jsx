@@ -79,8 +79,8 @@ class NewVote extends React.Component {
                     {
                         arr.map((i, id) => {
                             return (
-                                <div className="card w-75 card-block" key={id}>
-                                    <div className="card-block">
+                                <div className="card w-75 card-block-1" key={id}>
+                                    <div className="card-block-1">
                                         <input type="text" placeholder='Enter a category' name='voteInput'/>
                                         
                                     </div>

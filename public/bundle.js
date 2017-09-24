@@ -27021,10 +27021,10 @@ var NewVote = function (_React$Component) {
                     arr.map(function (i, id) {
                         return _react2.default.createElement(
                             'div',
-                            { className: 'card w-75 card-block', key: id },
+                            { className: 'card w-75 card-block-1', key: id },
                             _react2.default.createElement(
                                 'div',
-                                { className: 'card-block' },
+                                { className: 'card-block-1' },
                                 _react2.default.createElement('input', { type: 'text', placeholder: 'Enter a category', name: 'voteInput' })
                             )
                         );
@@ -28077,35 +28077,32 @@ var ShowVotes = function (_React$Component) {
         key: 'showCategories',
         value: function showCategories() {
             var data = this.props.voteSearched.searchReducer;
+            var voteCards = data[data.length - 1].voteSearched[0].votes;
 
             if (this.props.voteSearched.searchReducer.length === 0) {
                 return false;
             } else {
                 return _react2.default.createElement(
                     'div',
-                    { className: 'row' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'col-sm-6' },
-                        _react2.default.createElement(
+                    { className: 'card text-right' },
+                    voteCards.map(function (card, id) {
+                        console.log('in the loop', card);
+                        return _react2.default.createElement(
                             'div',
-                            { className: 'card' },
+                            { className: 'card-block', key: id },
                             _react2.default.createElement(
-                                'div',
-                                { className: 'card-block' },
-                                _react2.default.createElement(
-                                    'p',
-                                    { className: 'card-text' },
-                                    'With supporting text below as a natural lead-in to additional content.'
-                                ),
-                                _react2.default.createElement(
-                                    'a',
-                                    { href: '#', className: 'btn btn-primary' },
-                                    'Go somewhere'
-                                )
+                                'h4',
+                                { className: 'card-title' },
+                                card.vote
+                            ),
+                            _react2.default.createElement(
+                                'button',
+                                { className: 'btn btn-warning' },
+                                'Likes: ',
+                                card.like
                             )
-                        )
-                    )
+                        );
+                    })
                 ); //end of return
             }
         } //ennd of showCategories

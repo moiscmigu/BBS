@@ -1,9 +1,15 @@
-.card-block {
+.card-block-1 {
     display: inline-block;
     overflow: wrap;
     margin: 1em 0.5em 0.3em 0;
 }
 
-.card-block input{
+.card-block-1 input{
     outline: none;
+}
+
+.card {
+    width:20rem;
+
+    text-align: center;
 }

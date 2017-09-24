@@ -27,22 +27,28 @@ class ShowVotes extends React.Component {
     }//end of start
 
     showCategories() {
-        let data = this.props.voteSearched.searchReducer
+        let data = this.props.voteSearched.searchReducer;
+        let voteCards =  data[data.length -1].voteSearched[0].votes
+
 
         if(this.props.voteSearched.searchReducer.length === 0) {
             return false; 
         } else {
             return (
-                <div className="row">
-                    <div className="col-sm-6">
-                        <div className="card">
-                            <div className="card-block">
+                <div className="card text-right" >
+                    {
+                        voteCards.map((card, id) => {
+                            console.log('in the loop', card)
+                            return (
+                                <div className="card-block" key={id}>
+                                    <h4 className="card-title">{card.vote}</h4>
 
-                                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                <a href="#" className="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>
+                                    <button className="btn btn-warning">Likes: {card.like}</button>
+                                </div>
+                            );
+                        })
+                    }
+                   
                 </div>
             );//end of return
         }
