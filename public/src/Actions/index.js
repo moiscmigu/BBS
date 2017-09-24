@@ -9,9 +9,10 @@ export const userSearchAction = (text) => {
     };
 };//end of assTOList
 
-export const sendUserVoteAction = (vote) => {
+export const sendUserVoteAction = (vote, card) => {
     console.log('this is the vote', vote);
-    const request = axios.put('/votes',  {card:vote});
+    console.log('this is the card in the action', card)
+    const request = axios.put('/votes',  {vote, card});
     return (dispatch) => {
         request.then(data => {
             console.log('back from the server with', data)

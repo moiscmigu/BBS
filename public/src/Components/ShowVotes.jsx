@@ -25,6 +25,7 @@ class ShowVotes extends React.Component {
     }//end of start
 
     handleLike(arr, card) {
+        console.log('this is the card ', card)
         if(this.state.voteCounter !== 0 ) {
             swal(
                 'Vote Limit Reached',
@@ -38,7 +39,7 @@ class ShowVotes extends React.Component {
 
             addVote.like++
 
-            this.props.sendUserVoteAction(arr);
+            this.props.sendUserVoteAction(arr, card);
             this.setState({voteCounter:1});
             return addVote;
         }

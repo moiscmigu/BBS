@@ -6976,9 +6976,10 @@ var userSearchAction = exports.userSearchAction = function userSearchAction(text
     };
 }; //end of assTOList
 
-var sendUserVoteAction = exports.sendUserVoteAction = function sendUserVoteAction(vote) {
+var sendUserVoteAction = exports.sendUserVoteAction = function sendUserVoteAction(vote, card) {
     console.log('this is the vote', vote);
-    var request = _axios2.default.put('/votes', { card: vote });
+    console.log('this is the card in the action', card);
+    var request = _axios2.default.put('/votes', { vote: vote, card: card });
     return function (dispatch) {
         request.then(function (data) {
             console.log('back from the server with', data);
@@ -27961,6 +27962,7 @@ var ShowVotes = function (_React$Component) {
     }, {
         key: 'handleLike',
         value: function handleLike(arr, card) {
+            console.log('this is the card ', card);
             if (this.state.voteCounter !== 0) {
                 (0, _bootstrapSweetalert2.default)('Vote Limit Reached', '', 'warning');
                 return false;
@@ -27970,7 +27972,7 @@ var ShowVotes = function (_React$Component) {
 
                 addVote.like++;
 
-                this.props.sendUserVoteAction(arr);
+                this.props.sendUserVoteAction(arr, card);
                 this.setState({ voteCounter: 1 });
                 return addVote;
             }

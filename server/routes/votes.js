@@ -47,7 +47,23 @@ router.get('/:search' , (req, res) => {
 });//end of get
 
 router.put('/' , (req, res) => {
-    console.log('PUT URL HIT', req.body);
+
+    let id = req.body.vote._id;
+    let index = req.body.card;
+
+    console.log('this is the indezx', index);
+    db.findOne({_id:id}, function(err, doc){
+        if (err) {
+            res.send('there was an err');
+        } else {
+            console.log('this is the old document', doc);
+            doc.votes[index].like = doc.votes[index].like + 1;
+
+            
+        }
+        console.log('this is the new document', doc);
+        db(doc).save();
+    })
     res.send(200);
 });//end of get
 
