@@ -20,8 +20,10 @@ class NewVote extends React.Component {
     addNewVote() {  
         
         let votes = [];
-
-        let votesInputValue = document.getElementsByName('voteInput')
+        let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+        let votesInputValue = document.getElementsByName('voteInput');
+        
+        console.log('expDate', tomorrow)
 
         for(let v = 0; v < votesInputValue.length; v++) {
             votes.push({vote:votesInputValue[v].value, like:0});
@@ -30,10 +32,11 @@ class NewVote extends React.Component {
         
         let categories = {
             title:this.state.title,
-            categories: votes
+            categories: votes,
+            expDate: tomorrow
         };//enf of categories
 
-        
+        console.log('this is the current category', categories);
         //posting vote to the data base
         axios.post('/votes', categories).then(res => {
             if(res.status === 200) {

@@ -12,6 +12,7 @@ let express = require('express'),
     
 router.post('/', (req, res) => {
     let token ='';
+    let expDate = req.body.expDate;
     rtg.generateKey({
         len: 4, // Generate 16 characters or bytes of data 
         string: true, // Output keys as a hex string 
@@ -22,8 +23,10 @@ router.post('/', (req, res) => {
             let newVote = {
                 title:req.body.title,
                 votes:req.body.categories,
-                token: key   
+                token: key,
+                expDate
             };//end of newVote
+            console.log('this is the saved to db', newVote)
             db(newVote).save();
             res.status(200).send(key);
     

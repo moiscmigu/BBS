@@ -4,15 +4,11 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import swal from 'bootstrap-sweetalert';
 import {bake_cookie, read_cookie} from 'sfcookies';
+import moment from 'moment';
 
 class ShowVotes extends React.Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            voteCounter:0
-        };//end of this state
-
     }//end of contructor
 
 
@@ -22,6 +18,15 @@ class ShowVotes extends React.Component {
         let showVotes = Boolean;
         let checkVotesArr = this.props.voteSearched.saveCookieReducer;
         let counter = 0;
+        let currentDate = new Date();
+
+        console.log('currentDate', currentDate.getDate())
+        console.log('arr.token', new Date(arr.expDate))   
+        if(currentDate <= new Date(arr.expDate)) {
+            console.log('date expired')
+        } else {
+            console.log('date has not expired')
+        }
         
         //checks to see if user has already voted;
         checkVotesArr.forEach(function(element) {
@@ -39,6 +44,13 @@ class ShowVotes extends React.Component {
                 'warning'
               )
             return false;
+        } else if(currentDate >= new Date(arr.expDate)) {
+            console.log('tiime limit expired')
+            swal(
+                'Vote Session Closed',
+                '',
+                'error'
+              )
         } else {
 
             let addVote = arr.votes[card];
@@ -59,7 +71,6 @@ class ShowVotes extends React.Component {
     showCategories() {
         let data = this.props.voteSearched.searchReducer;
         data =  data[data.length -1].voteSearched;
-
         if(this.props.voteSearched.searchReducer.length === 0) {
             return false; 
         } else {
@@ -71,6 +82,7 @@ class ShowVotes extends React.Component {
                             return (
                                 <div className='showVotes' key={id}  >
                                     <h1 >{v.title}</h1>
+                                    <h4><em>Expires in: {moment(v.expDate).fromNow(true)}</em></h4>
                                     {
                                      v.votes.map((card, cardId) => {
                                     

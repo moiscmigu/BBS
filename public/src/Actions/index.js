@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const userSearchAction = (text) => {
+
     const request = axios.get('/votes/' + text, {search:text});
     return (dispatch) => {
         request.then(data => {
@@ -10,6 +11,7 @@ export const userSearchAction = (text) => {
 };//end of assTOList
 
 export const sendUserVoteAction = (vote, card) => {
+
     const request = axios.put('/votes',  {vote, card});
     return (dispatch) => {
         request.then(data => {
