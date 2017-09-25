@@ -27,7 +27,6 @@ class NewVote extends React.Component {
             votes.push({vote:votesInputValue[v].value, like:0});
         }//end of for loop
 
-        console.log('the final botes', votes)
         
         let categories = {
             title:this.state.title,
@@ -37,7 +36,6 @@ class NewVote extends React.Component {
         
         //posting vote to the data base
         axios.post('/votes', categories).then(res => {
-            console.log('back from the server with', res)
             if(res.status === 200) {
                 swal(
                     'Your Access token is ' + res.data,

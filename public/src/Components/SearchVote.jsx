@@ -52,6 +52,7 @@ class SearchVote extends React.Component {
                             className="form-control" 
                             name="search" id="search" 
                             placeholder="Enter access token"
+                            autoFocus
                             onChange = {event => this.setState({search:event.target.value})}
                             />
                             <span className="glyphicon glyphicon-search form-control-feedback"  ></span>
