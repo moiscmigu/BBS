@@ -3,6 +3,7 @@ import {userSearchAction} from '../Actions/index';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import swal from 'bootstrap-sweetalert';
+import {bake_cookie, read_cookie} from 'sfcookies';
 
 
 
@@ -23,6 +24,8 @@ class SearchVote extends React.Component {
     }//end of contructor
 
     handleVoteSearch() {
+
+
         this.props.userSearchAction(this.state.search);
     }//end of handleVoteSearch
 

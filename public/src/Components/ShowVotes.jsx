@@ -1,14 +1,13 @@
 import React from 'react';
-import {userSearchAction,sendUserVoteAction } from '../Actions/index';
+import {userSearchAction,sendUserVoteAction, saveUserCookieAction } from '../Actions/index';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import swal from 'bootstrap-sweetalert';
+import {bake_cookie, read_cookie} from 'sfcookies';
+import cookie from 'react-cookies';
 
-
-
-
-
-
+//GLOBALS
+let limitArr = [];
 
 class ShowVotes extends React.Component {
     constructor(props) {
@@ -20,13 +19,39 @@ class ShowVotes extends React.Component {
 
     }//end of contructor
 
-    start() {
-
-    }//end of start
 
     handleLike(arr, card) {
-        console.log('this is the card ', card)
-        if(this.state.voteCounter !== 0 ) {
+        
+        
+        
+        let showVotes = Boolean;
+        let checkVotesArr = this.props.voteSearched.saveCookieReducer;
+        let counter = 0;
+        
+
+
+
+
+        checkVotesArr.forEach(function(element) {
+           
+
+            if(element.contains.includes(arr.token)) {
+                console.log('this is inclided')
+                counter++;
+            } else {
+                console.log('nothing found')
+            }
+            return counter;
+         });
+
+        console.log('this will determina if the function runs or not', counter)
+
+
+
+
+        
+       
+        if( counter !== 0) {
             swal(
                 'Vote Limit Reached',
                 '',
@@ -39,8 +64,15 @@ class ShowVotes extends React.Component {
 
             addVote.like++
 
+            //sends vote to the db
             this.props.sendUserVoteAction(arr, card);
-            this.setState({voteCounter:1});
+
+            //saves vote to cookie
+            this.props.saveUserCookieAction(arr, card);
+
+            
+
+
             return addVote;
         }
         
@@ -89,12 +121,13 @@ class ShowVotes extends React.Component {
 
     render() {
 
+        
+
         if(this.props.voteSearched.searchReducer.length === 0 ) {
             return false;
         } else {
             return(
                 <div>
-                    {this.start()}
                     <h1>{this.props.voteSearched.searchReducer[0].voteSearched[0].title}</h1>
                     {this.showCategories()}
                     
@@ -111,7 +144,8 @@ class ShowVotes extends React.Component {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         userSearchAction,
-        sendUserVoteAction
+        sendUserVoteAction,
+        saveUserCookieAction
     },
      dispatch)
 }

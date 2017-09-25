@@ -24,6 +24,7 @@
     "mongoose": "^4.11.12",
     "random-token-generator": "^1.0.2",
     "react": "^15.6.1",
+    "react-cookies": "^0.1.0",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
     "react-tic-tac-toe": "^1.0.3",

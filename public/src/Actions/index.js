@@ -10,15 +10,22 @@ export const userSearchAction = (text) => {
 };//end of assTOList
 
 export const sendUserVoteAction = (vote, card) => {
-    console.log('this is the vote', vote);
-    console.log('this is the card in the action', card)
     const request = axios.put('/votes',  {vote, card});
     return (dispatch) => {
         request.then(data => {
-            console.log('back from the server with', data)
             dispatch({type:"NOTHING_YET", payload:data});
         });
     };
+};//end of assTOList
+
+export const saveUserCookieAction = (arr, card) => {
+    let action = {
+        type:"SAVE_TO_COOKIE",
+        arr, 
+        card
+    }
+    
+    return action;
 };//end of assTOList
 
 
