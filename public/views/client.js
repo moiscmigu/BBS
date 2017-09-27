@@ -7,4 +7,5 @@ function onReady() {
         e.preventDefault();
         return false;
     });//end of voteSearchInput
+
 }//end of onReady

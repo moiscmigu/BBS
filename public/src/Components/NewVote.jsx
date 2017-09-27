@@ -11,8 +11,8 @@ class NewVote extends React.Component {
         super(props);
 
         this.state = {
-            title:String,
-            numOfVotes:0
+            title:'',
+            numOfVotes:Number
         };//end of state
 
     }//end of constructo]
@@ -23,7 +23,7 @@ class NewVote extends React.Component {
         let tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
         let votesInputValue = document.getElementsByName('voteInput');
         
-        console.log('expDate', tomorrow)
+
 
         for(let v = 0; v < votesInputValue.length; v++) {
             votes.push({vote:votesInputValue[v].value, like:0});
@@ -36,15 +36,26 @@ class NewVote extends React.Component {
             expDate: tomorrow
         };//enf of categories
 
-        console.log('this is the current category', categories);
+
         //posting vote to the data base
+        if(categories.title === '' || categories.title === ' ' || categories.title === undefined) {
+            swal(
+                    'Please Enter a title',
+                    '',
+                    'error'
+                  );
+        } else {
         axios.post('/votes', categories).then(res => {
             if(res.status === 200) {
                 swal(
                     'Your Access token is ' + res.data,
                     'Vote Created',
                     'success'
-                  )
+                  );
+                  this.setState({
+                    title:"",
+                    numOfVotes:Number
+                  })
             } else {
                 swal(
                     'Error',
@@ -53,6 +64,7 @@ class NewVote extends React.Component {
                   )
             }
         });//end of axios
+    }
         
 
 
@@ -100,7 +112,7 @@ class NewVote extends React.Component {
     render(){
         return(
             <div className="col-md-4 ">           
-                <button className="btn btn-primary" type="submit" data-toggle="modal" data-target="#myModal" >Start New Vote</button>
+                <button id='startNewVoteButton' className="btn btn-danger" type="submit" data-toggle="modal" data-target="#myModal" >Start New Vote</button>
 
                 <div id="myModal" className="modal fade" role="dialog">
                     <div className="modal-dialog">
@@ -111,8 +123,8 @@ class NewVote extends React.Component {
                             </div>
                             <div className="modal-body">
 
-                                <input type="text" onChange={event => this.setState({title:event.target.value})}  placeholder='The title' />
-                                <input type="number" onChange={event => this.setState({numOfVotes:Number(event.target.value)}) } placeholder='How Many Categories?' />
+                                <input id='titleFocus' type="text" onChange={event => this.setState({title:event.target.value})}  placeholder='The title' value={this.state.title}/>
+                                <input type="number" onChange={event => this.setState({numOfVotes:Number(event.target.value)}) } placeholder='How Many Categories?' value={this.state.numOfVotes}/>
                                 {this.displayNumOfVotes()}
 
                                 

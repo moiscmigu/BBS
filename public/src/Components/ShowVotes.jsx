@@ -8,7 +8,10 @@ import moment from 'moment';
 
 class ShowVotes extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
+
+        this.state = {
+        }
     }//end of contructor
 
 
@@ -17,40 +20,33 @@ class ShowVotes extends React.Component {
 
         let showVotes = Boolean;
         let checkVotesArr = this.props.voteSearched.saveCookieReducer;
-        let counter = 0;
+        let counterLimit = 0;
         let currentDate = new Date();
 
-        console.log('currentDate', currentDate.getDate())
-        console.log('arr.token', new Date(arr.expDate))   
-        if(currentDate <= new Date(arr.expDate)) {
-            console.log('date expired')
-        } else {
-            console.log('date has not expired')
-        }
-        
         //checks to see if user has already voted;
         checkVotesArr.forEach(function(element) {
             if(element.contains.includes(arr.token)) {
-                counter++;
+                counterLimit++;
             } else {
             }
-            return counter;
+            return counterLimit;
          });
        
-        if( counter !== 0) {
+        if( counterLimit !== 0) {
             swal(
                 'Vote Limit Reached',
                 '',
                 'warning'
               )
+              
             return false;
         } else if(currentDate >= new Date(arr.expDate)) {
-            console.log('tiime limit expired')
+
             swal(
                 'Vote Session Closed',
                 '',
                 'error'
-              )
+              );
         } else {
 
             let addVote = arr.votes[card];
@@ -78,14 +74,12 @@ class ShowVotes extends React.Component {
                 <div className='showVotes'>
                     {
                         data.map((v, id) => {
-                            
                             return (
                                 <div className='showVotes' key={id}  >
                                     <h1 >{v.title}</h1>
-                                    <h4><em>Expires in: {moment(v.expDate).fromNow(true)}</em></h4>
+                                    <h4><em>Expired: {moment(v.expDate).fromNow()}</em></h4>
                                     {
                                      v.votes.map((card, cardId) => {
-                                    
                                     return (
                                         <div className="card" key={cardId}>
                                             <div className="card-block">
@@ -93,18 +87,13 @@ class ShowVotes extends React.Component {
                                                 <button className='btn btn-warning' onClick={() => this.handleLike(v, cardId)} >Votes: {card.like}</button>
                                             </div>
                                       </div>
-                                        
                                     )
                                 })
                             }
                                 </div>
-                            )
-
-                            
+                            )  
                         })
-
                     }
-                   
                 </div>
             );//end of return
         }

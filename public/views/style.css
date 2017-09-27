@@ -21,3 +21,8 @@
 .showVotes {
     text-align: center;
 }
+
+
+#myModal input{
+    margin:1em;
+}
