@@ -1,28 +1,7 @@
-.card-block-1 {
-    display: inline-block;
-    overflow: wrap;
-    margin: 1em 0.5em 0.3em 0;
-}
-
-.card-block-1 input{
-    outline: none;
-}
-
-.card {
-    width:20rem;
-
-    text-align: center;
-
-    margin:3em;
-    display: inline-block;
-    font-family: "Arial Black", Gadget, sans-serif
-}
-
-.showVotes {
-    text-align: center;
-}
-
-
-#myModal input{
-    margin:1em;
+.theBox {
+    margin-top:3em;
+    height:15em;
+    width:15em;
+    border-radius:100%;
+    background-color: red;
 }
