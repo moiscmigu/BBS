@@ -39,14 +39,12 @@ class Start extends React.Component {
 
         let boxi = this.state.theBox;
 
-        console.log('boxi', boxi)
         return (
             <div>
                 {
                     boxi.map((box, id) => {
-                        console.log('looping', box);
                         return (
-                            <div>
+                            <div key={id}>
                                 {box}
                             </div>
                         )
