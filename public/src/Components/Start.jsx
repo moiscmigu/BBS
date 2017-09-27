@@ -9,7 +9,8 @@ class Start extends React.Component {
 
         this.state = {
             theBox:[],
-            rando:Number
+            rando:Number,
+            boxArrIndex:0
         };
 
 
@@ -31,14 +32,32 @@ class Start extends React.Component {
         
         this.setState({theBox:boxArr});
 
+        
+        clearInterval(this.changeBoxColor);
 
     }//end of startBox
+
+    changeBoxColor() {
+        
+        let index = this.state.boxArrIndex;
+        let arr = this.state.theBox
+
+
+
+        let box = arr[index];
+        console.log(box)
+        this.setState({boxArrIndex:index++})
+    }//end of changeBoxColor
 
     //this will display the boxes
     showBox() {
 
         let boxi = this.state.theBox;
 
+        //clears inteveal so it does not speed up
+        
+        
+        
         return (
             <div>
                 {
@@ -55,6 +74,10 @@ class Start extends React.Component {
     }//end of showBOx
 
     render() {
+        
+        setInterval(this.changeBoxColor.bind(this), 3000);
+        clearInterval(this.changeBoxColor());
+        
         return(
             <div className='container'>
                 
