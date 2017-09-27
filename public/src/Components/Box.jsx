@@ -14,15 +14,15 @@ class Box extends React.Component {
             let r = Math.floor(Math.random() * 256);
             let g = Math.floor(Math.random() * 256);
             let b = Math.floor(Math.random() * 256);
-            let color = "rgba(" + r + "," + g + "," + b + "," + "5)";
-
+            let a = Math.floor(Math.random() * 6);
+            let color = "rgba(" + r + "," + g + "," + b + "," +"5)";
+            console.log('this si the color', color)
 
             return color;
         }//end of randoColor
 
 
     componentWillMount() {
-        console.log('componentWillMount');
 
        
         this.state = {
@@ -30,6 +30,8 @@ class Box extends React.Component {
                 'marginTop':'3em',
                 'height':'15em',
                 'width':'15em',
+                'display' : 'inline-block',
+                'border-radius': '30%',
                 'backgroundColor': this.randoColor()
             },
         };

@@ -2,6 +2,7 @@ import React from 'react';
 import Box from './Box.jsx'
 
 
+
 class Start extends React.Component {
 
     constructor(props) {
@@ -10,7 +11,13 @@ class Start extends React.Component {
         this.state = {
             theBox:[],
             rando:Number,
-            boxArrIndex:0
+            boxArrIndex:0,
+            boxStyle: {
+                'marginTop':'3em',
+                'height':'15em',
+                'width':'15em',
+                'backgroundColor': "green"
+            },
         };
 
 
@@ -19,6 +26,7 @@ class Start extends React.Component {
     //startBox when clicked will render an amoutn of boxes on the DOM and start the 'game'
     startBox() {
         //eventually this will determain how many boxes are displayed on the DOM
+
         let randoBox = Math.floor(Math.random() * 100);
         let boxArr = [];
 
@@ -31,39 +39,25 @@ class Start extends React.Component {
         }//end of loop  
         
         this.setState({theBox:boxArr});
-
         
-        clearInterval(this.changeBoxColor);
+        this.showBox()
 
+    
     }//end of startBox
 
-    changeBoxColor() {
-        
-        let index = this.state.boxArrIndex;
-        let arr = this.state.theBox
-
-
-
-        let box = arr[index];
-        console.log(box)
-        this.setState({boxArrIndex:index++})
-    }//end of changeBoxColor
 
     //this will display the boxes
     showBox() {
-
         let boxi = this.state.theBox;
 
-        //clears inteveal so it does not speed up
-        
-        
-        
-        return (
-            <div>
+
+
+            return (
+            <div className="inline">
                 {
                     boxi.map((box, id) => {
                         return (
-                            <div key={id}>
+                            <div key={id} className="inline">
                                 {box}
                             </div>
                         )
@@ -71,27 +65,22 @@ class Start extends React.Component {
                 }
             </div>
         );
+
+        
     }//end of showBOx
 
+    componentDidMount() {
+
+        setInterval(this.startBox.bind(this), 3000)
+    }
+
     render() {
+
         
-        setInterval(this.changeBoxColor.bind(this), 3000);
-        clearInterval(this.changeBoxColor());
-        
+
         return(
             <div className='container'>
-                
-                <div className='row'>
-                    <div className='col-md-12'>
-                    <button className='btn btn-success'  onClick={this.startBox.bind(this)} >Start</button>
-                  </div>  
-                </div>
-
-                <div className='row'>
-                    <div className='col-md-12'>
-                            {this.showBox()}
-                    </div>  
-                </div>
+                {this.showBox()}
             </div>
             
         );

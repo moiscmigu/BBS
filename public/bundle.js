@@ -11264,21 +11264,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var store = (0, _redux.createStore)(_Reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 _reactDom2.default.render(_react2.default.createElement(
-    _reactRedux.Provider,
-    { store: store },
-    _react2.default.createElement(
-        'div',
-        { className: 'container' },
-        _react2.default.createElement(
-            'div',
-            { className: 'row' },
-            _react2.default.createElement(
-                'div',
-                { className: 'col-md-12' },
-                _react2.default.createElement(_Start2.default, null)
-            )
-        )
-    )
+  _reactRedux.Provider,
+  { store: store },
+  _react2.default.createElement(_Start2.default, null)
 ), document.getElementById('root'));
 
 /***/ }),
@@ -24846,7 +24834,13 @@ var Start = function (_React$Component) {
         _this.state = {
             theBox: [],
             rando: Number,
-            boxArrIndex: 0
+            boxArrIndex: 0,
+            boxStyle: {
+                'marginTop': '3em',
+                'height': '15em',
+                'width': '15em',
+                'backgroundColor': "green"
+            }
         };
 
         return _this;
@@ -24859,6 +24853,7 @@ var Start = function (_React$Component) {
         key: 'startBox',
         value: function startBox() {
             //eventually this will determain how many boxes are displayed on the DOM
+
             var randoBox = Math.floor(Math.random() * 100);
             var boxArr = [];
 
@@ -24872,39 +24867,24 @@ var Start = function (_React$Component) {
 
             this.setState({ theBox: boxArr });
 
-            clearInterval(this.changeBoxColor);
+            this.showBox();
         } //end of startBox
 
-    }, {
-        key: 'changeBoxColor',
-        value: function changeBoxColor() {
-
-            var index = this.state.boxArrIndex;
-            var arr = this.state.theBox;
-
-            var box = arr[index];
-            console.log(box);
-            this.setState({ boxArrIndex: index++ });
-        } //end of changeBoxColor
 
         //this will display the boxes
 
     }, {
         key: 'showBox',
         value: function showBox() {
-
             var boxi = this.state.theBox;
-
-            //clears inteveal so it does not speed up
-
 
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'inline' },
                 boxi.map(function (box, id) {
                     return _react2.default.createElement(
                         'div',
-                        { key: id },
+                        { key: id, className: 'inline' },
                         box
                     );
                 })
@@ -24912,37 +24892,19 @@ var Start = function (_React$Component) {
         } //end of showBOx
 
     }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+
+            setInterval(this.startBox.bind(this), 3000);
+        }
+    }, {
         key: 'render',
         value: function render() {
-
-            setInterval(this.changeBoxColor.bind(this), 3000);
-            clearInterval(this.changeBoxColor());
 
             return _react2.default.createElement(
                 'div',
                 { className: 'container' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'row' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'col-md-12' },
-                        _react2.default.createElement(
-                            'button',
-                            { className: 'btn btn-success', onClick: this.startBox.bind(this) },
-                            'Start'
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'row' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'col-md-12' },
-                        this.showBox()
-                    )
-                )
+                this.showBox()
             );
         } //end of render
 
@@ -24997,7 +24959,9 @@ var Box = function (_React$Component) {
             var r = Math.floor(Math.random() * 256);
             var g = Math.floor(Math.random() * 256);
             var b = Math.floor(Math.random() * 256);
+            var a = Math.floor(Math.random() * 6);
             var color = "rgba(" + r + "," + g + "," + b + "," + "5)";
+            console.log('this si the color', color);
 
             return color;
         } //end of randoColor
@@ -25006,13 +24970,14 @@ var Box = function (_React$Component) {
     }, {
         key: "componentWillMount",
         value: function componentWillMount() {
-            console.log('componentWillMount');
 
             this.state = {
                 boxStyle: {
                     'marginTop': '3em',
                     'height': '15em',
                     'width': '15em',
+                    'display': 'inline-block',
+                    'border-radius': '30%',
                     'backgroundColor': this.randoColor()
                 }
             };
