@@ -1,12 +1,21 @@
 # VOTING APP
 
-Users are able to post anything to a "Web Forum" that they can share with their friends via access token
-Once the timer hits 0. Users that have the access token will be able to always enter it and see the results in proprietary.
-----
+#### Website: * https://voting-app-mm.herokuapp.com/ *
+
+### **Main Functions**
+    1. To start a new voting session, click Start New Vote button.
+
+    2. The app give you a short token to search the vote by.
+
+    3. To check an existing voting session, input the provided token.
+
+### **Limitations**
+    1. Users can only cast one vote per voting session.
+
+    2. Users can not vote once the one day time limit expired.
+
+    3. To check an existing voting session, input the provided token.
 
 
-1. User Setup
-    * Landing Page
-        * let the user create a voting window. 
-        * let User submit as many things as they want
-        * Grant them an access token for their friends.
+   
+   
