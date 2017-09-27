@@ -1,6 +1,8 @@
 var mongoose = require ('mongoose');
 
-mongoose.connect("localhost:27017/votingApp");
+mongoose.connect(process.env.MONGO_URI);
+
+
 
 var votingSchema = new mongoose.Schema({
   title:{type:String, required:true},

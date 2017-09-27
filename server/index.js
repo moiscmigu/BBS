@@ -1,3 +1,6 @@
+require('dotenv').config({
+    path:"./.env"
+});
 let express = require('express'),
     app = express(),
     path = require('path'), 
@@ -7,7 +10,7 @@ let express = require('express'),
 let port = process.env.PORT || 3000;
 
 //USES
-let votes = require('./routes/votes')
+let votes = require('./routes/votes');
 
 
 
