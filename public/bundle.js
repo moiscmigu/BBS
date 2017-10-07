@@ -7973,7 +7973,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var loginAction = exports.loginAction = function loginAction(creds) {
 
-    var request = _axios2.default.post('/login', creds);
+    var request = _axios2.default.post('/register', creds);
 
     return function (dispatch) {
         request.then(function (data) {
@@ -30006,24 +30006,31 @@ var Login = function (_React$Component) {
 
         _this.state = {
             email: String,
-            password: String
+            password: String,
+            emailR: String,
+            passwordR: String,
+            nameR: String
         };
         return _this;
     } //end of constructor
 
     _createClass(Login, [{
-        key: 'handleLogin',
-        value: function handleLogin() {
+        key: 'handleRegister',
+        value: function handleRegister() {
             var credentials = {
-                email: this.state.email,
-                password: this.state.password
+                email: this.state.emailR,
+                password: this.state.passwordR,
+                name: this.state.nameR
             };
-            console.log('credetingals', credentials);
-            console.log('this', this.props);
+            console.log('registering..', credentials);
             this.props.loginAction(credentials);
         } //end of handleLogin
 
-
+    }, {
+        key: 'handleLogin',
+        value: function handleLogin() {
+            console.log('loggin in...');
+        }
     }, {
         key: 'render',
         value: function render() {
@@ -30129,16 +30136,53 @@ var Login = function (_React$Component) {
                                     _react2.default.createElement(
                                         'h4',
                                         { className: 'modal-title' },
-                                        'Start New Vote'
+                                        'Register'
                                     )
                                 ),
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'modal-body' },
                                     _react2.default.createElement(
-                                        'h1',
-                                        null,
-                                        'Modal'
+                                        'section',
+                                        { className: 'login-inner' },
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'login-middle' },
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'login-details' },
+                                                _react2.default.createElement(
+                                                    'form',
+                                                    { onSubmit: this.handleLogin.bind(this) },
+                                                    _react2.default.createElement(
+                                                        'h2',
+                                                        null,
+                                                        'New User'
+                                                    ),
+                                                    _react2.default.createElement(
+                                                        'label',
+                                                        null,
+                                                        _react2.default.createElement('input', { type: 'text', placeholder: 'First Name', onChange: function onChange(event) {
+                                                                return _this2.setState({ nameR: event.target.value });
+                                                            } })
+                                                    ),
+                                                    _react2.default.createElement(
+                                                        'label',
+                                                        null,
+                                                        _react2.default.createElement('input', { type: 'text', placeholder: 'Email address', autoFocus: true, onChange: function onChange(event) {
+                                                                return _this2.setState({ emailR: event.target.value });
+                                                            } })
+                                                    ),
+                                                    _react2.default.createElement(
+                                                        'label',
+                                                        null,
+                                                        _react2.default.createElement('input', { type: 'password', placeholder: 'Password', onChange: function onChange(event) {
+                                                                return _this2.setState({ passwordR: event.target.value });
+                                                            } })
+                                                    )
+                                                )
+                                            )
+                                        )
                                     )
                                 ),
                                 _react2.default.createElement(
@@ -30146,7 +30190,7 @@ var Login = function (_React$Component) {
                                     { className: 'modal-footer' },
                                     _react2.default.createElement(
                                         'button',
-                                        { type: 'button', className: 'btn btn-success', 'data-dismiss': 'modal', id: 'signupSubmit' },
+                                        { type: 'button', className: 'btn btn-success', 'data-dismiss': 'modal', id: 'signupSubmit', onClick: this.handleRegister.bind(this) },
                                         ' Submit'
                                     )
                                 )

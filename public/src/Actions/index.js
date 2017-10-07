@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const loginAction = (creds) => {
     
-    let request = axios.post('/login', creds);
+    let request = axios.post('/register', creds);
 
     return (dispatch) => {
         request.then(data => {

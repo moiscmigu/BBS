@@ -12,22 +12,29 @@ class Login extends React.Component {
 
         this.state = {
             email:String,
-            password:String
+            password:String,
+            emailR:String,
+            passwordR:String,
+            nameR:String
         };
     }//end of constructor
 
-    handleLogin() {
+    handleRegister() {
         let credentials = {
-            email:this.state.email,
-            password:this.state.password
+            email:this.state.emailR,
+            password:this.state.passwordR,
+            name:this.state.nameR
         };
-        console.log('credetingals', credentials);
-        console.log('this', this.props)
+        console.log('registering..', credentials);
         this.props.loginAction(credentials)
 
 
 
     }//end of handleLogin
+
+    handleLogin() {
+        console.log('loggin in...')
+    }
 
    
     render() { 
@@ -77,14 +84,39 @@ class Login extends React.Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <h4 className="modal-title" >Start New Vote</h4>
+                                <h4 className="modal-title" >Register</h4>
                             </div>
                             <div className="modal-body">
-                                <h1>Modal</h1>
+                            
+
+
+                            <section className="login-inner">
+                                <div className="login-middle">
+                                <div className="login-details">
+                                    <form onSubmit={this.handleLogin.bind(this)}>
+                                    <h2>New User</h2>
+                                    <label>
+                                        <input type="text" placeholder="First Name" onChange={event => this.setState({nameR:event.target.value})} />
+                                    </label>
+                                    <label>
+                                        <input type="text" placeholder="Email address" autoFocus onChange={event => this.setState({emailR:event.target.value})} />
+                                    </label>
+                                    <label>
+                                        <input type="password" placeholder="Password" onChange={event => this.setState({passwordR:event.target.value})} />
+                                    </label>
+                                    
+                                   
+
+                                    </form>
+                                </div>
+                                </div>
+                            </section>
+
+
                                 
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className='btn btn-success'  data-dismiss="modal" id="signupSubmit"> Submit</button>
+                                <button type="button" className='btn btn-success'  data-dismiss="modal" id="signupSubmit" onClick={this.handleRegister.bind(this)} > Submit</button>
                             </div>
                         </div>
                     

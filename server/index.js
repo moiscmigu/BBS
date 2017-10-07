@@ -5,7 +5,7 @@ let express = require('express'),
     app = express(),
     path = require('path'), 
     bodyParser = require('body-parser'),
-    login = require('./routes/login');
+    register = require('./routes/register');
 
 
 let port = process.env.PORT || 4000;
@@ -18,7 +18,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-app.use('/login', login);
+app.use('/register', register);
 
 
 
