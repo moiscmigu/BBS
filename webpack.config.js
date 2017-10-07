@@ -1,6 +1,13 @@
 let path = require('path')
+
+
 module.exports = {
+   
     entry:path.resolve('public/src/index.js'),
+    devServer: 
+    {
+      historyApiFallback: true
+    },
     output: {
         path:__dirname + "/public",
         filename: "bundle.js"
@@ -14,5 +21,6 @@ module.exports = {
             }
         }]
     },
+   
     watch:true
 };

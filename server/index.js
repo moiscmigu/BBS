@@ -4,10 +4,11 @@ require('dotenv').config({
 let express = require('express'),
     app = express(),
     path = require('path'), 
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    pokeIndex = require('./routes/pokeIndex');
 
 
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 4000;
 
 //USES
 
@@ -16,6 +17,8 @@ let port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
+
+app.use('/pokeIndex', pokeIndex);
 
 
 
