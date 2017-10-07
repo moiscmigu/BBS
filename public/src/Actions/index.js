@@ -1,14 +1,14 @@
 import axios from 'axios';
-import {POKEINDEX} from '../Constants';
 
-export const pokeIndexAction = () => {
+
+export const loginAction = (creds) => {
     
-    let request = axios.get('/pokeIndex');
+    let request = axios.post('/login', creds);
 
     return (dispatch) => {
         request.then(data => {
-            console.log('back with the index of', data)
-            dispatch({type:POKEINDEX, payload:data});
+            console.log('Back from the server with:', data)
+            dispatch({type:"LOGIN", payload:data});
         });
     };
 

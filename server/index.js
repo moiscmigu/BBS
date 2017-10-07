@@ -5,7 +5,7 @@ let express = require('express'),
     app = express(),
     path = require('path'), 
     bodyParser = require('body-parser'),
-    pokeIndex = require('./routes/pokeIndex');
+    login = require('./routes/login');
 
 
 let port = process.env.PORT || 4000;
@@ -18,7 +18,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-app.use('/pokeIndex', pokeIndex);
+app.use('/login', login);
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {pokeIndexAction} from '../Actions/index';
+import {loginAction} from '../Actions/index';
 import {Link} from 'react-router-dom';
 import Header from './Header.jsx';
 
@@ -17,14 +17,32 @@ class Login extends React.Component {
     }//end of constructor
 
     handleLogin() {
-        console.log('logiing in ...', this.state)
-    }
+        let credentials = {
+            email:this.state.email,
+            password:this.state.password
+        };
+        console.log('credetingals', credentials);
+        console.log('this', this.props)
+        this.props.loginAction(credentials)
+
+
+
+    }//end of handleLogin
 
    
     render() { 
         return (
             <div>
             <div className="wrapper dark-header">
+            <div id="UserHeader">
+                <header className="main-header">
+                    <div className="logo " >
+                        <a href="index.html" >BIBLE BOOK STUDY</a>
+                    </div>
+                    
+
+                </header>
+            </div>
             <section className="login-inner">
                 <div className="login-middle">
                 <div className="login-details">
@@ -84,4 +102,21 @@ class Login extends React.Component {
 }//end of classNameName
 
 
-export default Login;
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        loginAction
+    },
+     dispatch)
+}
+
+function mapStateToProps(state) {
+    return {
+        login:state
+    }
+}
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

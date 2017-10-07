@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import pokeIndex from './pokeIndexReducer'
+import loginReducer from './loginReducer';
 
 export default combineReducers({
-    pokeIndex
+    loginReducer
 });
