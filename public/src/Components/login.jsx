@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {loginAction} from '../Actions/index';
+import {registerAction, loginAction} from '../Actions/index';
 import {Link} from 'react-router-dom';
 import Header from './Header.jsx';
 
@@ -25,15 +25,22 @@ class Login extends React.Component {
             password:this.state.passwordR,
             name:this.state.nameR
         };
-        console.log('registering..', credentials);
-        this.props.loginAction(credentials)
 
+        this.props.registerAction(credentials);
 
 
     }//end of handleLogin
 
+
     handleLogin() {
-        console.log('loggin in...')
+        let creds = {
+            email:this.state.email,
+            password:this.state.password
+        };
+
+        console.log('creds', creds);
+        console.log('this', this.props);
+        this.props.loginAction(creds)
     }
 
    
@@ -137,6 +144,7 @@ class Login extends React.Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        registerAction,
         loginAction
     },
      dispatch)

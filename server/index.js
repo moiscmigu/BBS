@@ -5,7 +5,11 @@ let express = require('express'),
     app = express(),
     path = require('path'), 
     bodyParser = require('body-parser'),
-    register = require('./routes/register');
+    register = require('./routes/register'),
+    login = require('./routes/login'),
+    session = require('express-session'),
+    passport = require('./routes/login');
+    
 
 
 let port = process.env.PORT || 4000;
@@ -18,7 +22,28 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
+
+
+app.use(session({
+	secret: 'secret',
+	key: 'user', // this is the name of the req.variable. 'user' is convention, but not required
+	resave: 'true',
+	saveUninitialized: false,
+	cookie: {
+		maxage: 60000,
+		secure: false
+	}
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+
 app.use('/register', register);
+app.use('/login', login);
+
 
 
 

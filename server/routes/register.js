@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
     let name = req.body.name,
         password = req.body.password,
         email = req.body.email;
-        console.log('say something')
+
     
         bcrypt.genSalt(12, function(err, salt) {
             if (err) {
@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
                   registerDB(newUser).save();
                   res.send(200);
                 }
-              }); 
+              });  
             }
           });
 });
