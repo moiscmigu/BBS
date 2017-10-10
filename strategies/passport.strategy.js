@@ -40,9 +40,10 @@ passport.use('local', new LocalStrategy({
                 message: 'Incorrect credentials.'
               });
         } else {
-            console.log('user');
-   
-            done(null, results)
+
+            let user = results
+            console.log('the user in deserialization', user);
+            done(null, user)
         }
         
       })

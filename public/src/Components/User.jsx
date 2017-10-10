@@ -4,6 +4,8 @@ import {bindActionCreators} from 'redux';
 import {pokeIndexAction} from '../Actions/index';
 import {Link} from 'react-router-dom';
 import Header from './Header.jsx';
+import axios from 'axios';
+
 
 
 class User extends React.Component {
@@ -18,6 +20,26 @@ class User extends React.Component {
     }//end of constructor
 
     
+    componentWillMount() {
+        console.log('mounting...');
+        axios.get('/login').then(res => {
+            console.log('geting the users information', res);
+            let userInfo = res.data;
+            if(userInfo === '' || userInfo === ' ' || userInfo === false) {
+                window.location = "/?#/";
+            } else {
+                this.state = {
+                    theUser: userInfo
+                };
+            }
+
+        });
+    }//end of component will mount
+
+    handleRandom() {
+        console.log('clciked');
+        console.log('The state', this.state)
+    }//end of handle random
 
    
     render() { 
@@ -25,6 +47,7 @@ class User extends React.Component {
             <div>
                 <Header />
                 <Link to='/'>Back to </Link>
+                <button onClick={this.handleRandom.bind(this)}>Hello</button>
             </div>
             
 

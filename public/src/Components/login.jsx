@@ -4,6 +4,9 @@ import {bindActionCreators} from 'redux';
 import {registerAction, loginAction} from '../Actions/index';
 import {Link} from 'react-router-dom';
 import Header from './Header.jsx';
+import {HashRouter as Router, Route, Redirect} from 'react-router-dom';
+import axios from 'axios';
+
 
 
 class Login extends React.Component {
@@ -38,11 +41,9 @@ class Login extends React.Component {
             password:this.state.password
         };
 
-        console.log('creds', creds);
-        console.log('this', this.props);
-        this.props.loginAction(creds)
+        this.props.loginAction(creds);
     }
-
+M
    
     render() { 
         return (
