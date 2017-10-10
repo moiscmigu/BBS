@@ -8,7 +8,7 @@ let express = require('express'),
     register = require('./routes/register'),
     login = require('./routes/login'),
     session = require('express-session'),
-    passport = require('./routes/login');
+    passport = require('../strategies/passport.strategy');
     
 
 
@@ -49,7 +49,8 @@ app.use('/login', login);
 
 //ROUTERS
 app.get('/', (req, res) => {
-    console.log('Main URL hit')
+    console.log('Main URL hit');
+    console.log('the passport user', req.isAuthenticated())
     res.sendFile(path.resolve('public/views/index.html'))
 });
 

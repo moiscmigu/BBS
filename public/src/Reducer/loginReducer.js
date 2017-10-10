@@ -5,7 +5,18 @@ const loginReducer = (state=[], action) => {
 
     switch(action.type) {
         case "LOGIN": 
-           console.log('login in the reducer', action);
+            let access = action.payload.data;
+            
+
+            if(access === true){
+                window.location = "/?#/user";
+            } else {
+                swal(
+                    'Login error',
+                    '',
+                    'error'
+                  );
+            }
             return state;
         default: 
             return state;

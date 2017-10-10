@@ -2,7 +2,6 @@ import axios from 'axios';
 
 
 export const registerAction = (creds) => {
-    
     let request = axios.post('/register', creds);
 
     return (dispatch) => {
@@ -20,7 +19,6 @@ export const loginAction = (creds) => {
 
     return (dispatch) => {
         request.then(data => {
-            console.log('Back from the server with:', data)
             dispatch({type:"LOGIN", payload:data});
         });
     };

@@ -26,8 +26,15 @@ router.post('/', (req, res) => {
                     password:hash, 
                     email:email
                   };
-                  registerDB(newUser).save();
-                  res.send(200);
+                  registerDB(newUser).save(err => {
+                    if(err) {
+                      console.log('err', err);
+                      res.send(err)
+                    } else {
+                      res.send(200);
+                    }
+                  });
+                  
                 }
               });  
             }

@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {pokeIndexAction} from '../Actions/index';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
+
 
 
 class Header extends React.Component {
@@ -18,7 +20,11 @@ class Header extends React.Component {
 
 
     handleLogout() {
-        console.log('loging out..')
+        console.log('loging out..');
+        axios.delete('/login').then(res => {
+            console.log('back from the server with', res);
+            window.location = "/?#/";
+        })
     }
 
    
