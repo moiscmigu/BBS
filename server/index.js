@@ -7,12 +7,13 @@ let express = require('express'),
     bodyParser = require('body-parser'),
     register = require('./routes/register'),
     login = require('./routes/login'),
+    newBook = require('./routes/newBook'),
     session = require('express-session'),
     passport = require('../strategies/passport.strategy');
     
 
 
-let port = process.env.PORT || 4000;
+let port = process.env.PORT || 5000;
 
 //USES
 
@@ -43,6 +44,7 @@ app.use(passport.session());
 
 app.use('/register', register);
 app.use('/login', login);
+app.use('/newBook', newBook);
 
 
 
@@ -50,8 +52,8 @@ app.use('/login', login);
 //ROUTERS
 app.get('/', (req, res) => {
     console.log('Main URL hit');
-    console.log('the passport user', req.isAuthenticated())
-    res.sendFile(path.resolve('public/views/index.html'))
+    console.log('Is the user authenticated:', req.isAuthenticated());
+    res.sendFile(path.resolve('public/views/index.html'));
 });
 
 

@@ -1,7 +1,8 @@
 import React from 'react';
+import {startNewBookAction} from '../Actions/index';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {pokeIndexAction} from '../Actions/index';
+
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import {bibleBooks} from '../../data/bibleBooks';
@@ -13,12 +14,16 @@ class Header extends React.Component {
         super(props);
 
         this.state = {
-            book:String
+            book:"Genesis"
         };
     }//end of constructor
 
     handleNewBook() {
-        console.log('starting a new book...')
+        let userBook = this.state.book;
+        console.log('The book chosen by the user', this);
+        this.props.startNewBookAction(userBook)
+
+
     }//handleNewBook
 
 
@@ -31,10 +36,9 @@ class Header extends React.Component {
     }//end of handleLogout
 
     showBibleBooks() {
+        //displays the option tag for every book in the bible
         console.log('showing the books');
         let books = bibleBooks;
-        console.log(books);
-
         return(
                 
                     books.map((b, id) => {
@@ -42,11 +46,12 @@ class Header extends React.Component {
                             <option value={b} key={id}>{b}</option>
                         );
                     })
-                
-        );
-
-
+        );//end of return
     }//end og showBibleBooks
+
+    start() {
+        console.log('start', this)
+    }//end of start
 
    
     render() { 
@@ -71,22 +76,24 @@ class Header extends React.Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <h4 className="modal-title" >New Book</h4>
-                                <label htmlFor="book">Book:</label>
-                                <select name="book"  id="" onChange={event => this.setState({book:event.target.value})}>
-                                    {this.showBibleBooks()}                   
-                                </select>
+                                <form onSubmit={this.handleNewBook.bind(this)}>
+                                    <h4 className="modal-title" >New Book</h4>
+                                    <label htmlFor="book">Book:</label>
+                                    <select name="book"  id="" onChange={event => this.setState({book:event.target.value})}>
+                                        {this.showBibleBooks()}                   
+                                    </select>
+                                    <input type="button" value="Start0" onClick={this.start.bind(this)}/>
+                                </form>
+                                
+                                
+                                
 
                             </div>
                             <div className="modal-body">
                             
-
-
-
-                                
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className='btn btn-success'  data-dismiss="modal" id="signupSubmit" > Submit</button>
+                                <button type="button" className='btn btn-success'  data-dismiss="modal" id="signupSubmit" onClick={this.handleNewBook.bind(this)}> Enter</button>
                             </div>
                         </div>
                     
@@ -102,4 +109,21 @@ class Header extends React.Component {
 }//end of classNameName
 
 
-export default Header;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        startNewBookAction
+        
+    },
+     dispatch)
+}
+
+function mapStateToProps(state) {
+    return {
+        newBook:state
+    }
+}
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

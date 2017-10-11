@@ -25,3 +25,19 @@ export const loginAction = (creds) => {
 
 
 };//
+
+export const startNewBookAction = (book) => {
+    
+    console.log('startNew Boo action with the book', book);
+    let request = axios.post('/newBook', {book});
+
+    return (dispatch) => {
+        request.then(data => {
+
+            console.log('back from the server with', data);
+            dispatch({type:"NEWBOOK", payload:data});
+        });
+    };
+
+
+};//

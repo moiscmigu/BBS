@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {pokeIndexAction} from '../Actions/index';
+import {startNewBook} from '../Actions/index';
 import {Link} from 'react-router-dom';
 import Header from './Header.jsx';
 import axios from 'axios';
@@ -35,6 +35,8 @@ class User extends React.Component {
         });
     }//end of component will mount
 
+
+
     
 
    
@@ -42,7 +44,7 @@ class User extends React.Component {
         return (
             <div>
                 <Header />
-                
+               
             </div>
             
 

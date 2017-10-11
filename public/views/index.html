@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <!-- Bible Widget -->
+    <script id="bw-widget-src" src="//bibles.org/widget/client"></script>
+
+    <script type="text/javascript" defer="defer" src="https://labs.bible.org/api/NETBibleTagger/v2/netbibletagger.js">
+    </script>
+    <script>
+        BIBLESEARCH.widget({
+            "background": "FFFFFF",
+            "color": "E2615C"
+        });
+        </script>
+
     <script
     src="https://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -23,12 +35,13 @@
     
 
     <script src="views/client.js"></script>
-    <title>React | Vote</title>
+    <title>Bible Book Study</title>
 </head>
 <body>
 
     <div id="root"></div>
-
+ 
+    
     <script src="bundle.js"></script>
 </body>
 </html> 

@@ -33,13 +33,13 @@ router.post('/', (req, res) => {
                     } else {
                       res.send(200);
                     }
-                  });
+                  });//enf of save to db
                   
-                }
-              });  
+                }//end of else statement
+              });  //end bcrypt hash
             }
-          });
-});
+          });//enf of bcrypt genSalt
+});//enf of post
 
 
 module.exports = router;
