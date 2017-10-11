@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import {pokeIndexAction} from '../Actions/index';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import {bibleBooks} from '../../data/bibleBooks';
 
 
 
@@ -11,7 +12,9 @@ class Header extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            book:String
+        };
     }//end of constructor
 
     handleNewBook() {
@@ -23,9 +26,27 @@ class Header extends React.Component {
         console.log('loging out..');
         axios.delete('/login').then(res => {
             console.log('back from the server with', res);
-            window.location = "/?#/";
+            window.location = "/?#/user";
         })
-    }
+    }//end of handleLogout
+
+    showBibleBooks() {
+        console.log('showing the books');
+        let books = bibleBooks;
+        console.log(books);
+
+        return(
+                
+                    books.map((b, id) => {
+                        return (
+                            <option value={b} key={id}>{b}</option>
+                        );
+                    })
+                
+        );
+
+
+    }//end og showBibleBooks
 
    
     render() { 
@@ -36,11 +57,42 @@ class Header extends React.Component {
                     <div className="navbar navbar-static-top">
                     <div className="btn-grps pull-right">
                         <a className="pink-btn dark-btn"  onClick={this.handleLogout.bind(this)}  >Logout</a>
-                        <a  className="pink-btn" onClick={this.handleNewBook.bind(this)}>New Book</a>
+                        <a  className="pink-btn" data-toggle="modal" data-target="#myModal">New Book</a>
                     </div>
                     </div>
 
                 </header>
+
+
+                <div className="col-md-4 ">           
+
+                <div id="myModal" className="modal fade" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                <h4 className="modal-title" >New Book</h4>
+                                <label htmlFor="book">Book:</label>
+                                <select name="book"  id="" onChange={event => this.setState({book:event.target.value})}>
+                                    {this.showBibleBooks()}                   
+                                </select>
+
+                            </div>
+                            <div className="modal-body">
+                            
+
+
+
+                                
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className='btn btn-success'  data-dismiss="modal" id="signupSubmit" > Submit</button>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
             </div>
 
         );

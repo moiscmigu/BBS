@@ -14,14 +14,9 @@ router.delete('/', (req, res) => {
     res.send(200);
 });
 
-router.get('/', (req, res) => {
-    if(user.isAuthenticated()) {
-        console.log('Back from the server with', req.user);
-        res.send(req.user);
-    } else {
-        res.sendStatus(401);
-    }
-    
+router.get('/', (req, res) => { 
+    console.log('Giving user information');
+    res.send(req.user)
 });//end of get
 
 module.exports = router;

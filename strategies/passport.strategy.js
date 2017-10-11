@@ -13,28 +13,24 @@ passport.use('local', new LocalStrategy({
 
     db.findOne({ 'email':  email}, 'email', function (err, user) {
         if(err) {
-            console.log('err', err)
         } else {
-            console.log('user',user);
             done(null, user)
         }
         
       })
     
-  }));
+  }));//end of passport Local Strategy
 
 
   passport.serializeUser(function(user, done) {
-    console.log('serializing the user', user.id)
     done(null, user.id);
-  });
+  });//end of serialazation
 
 
   passport.deserializeUser(function(id, done) {
      
-    console.log('deserializeUser the user', id);
 
-    db.findOne({ '_id':  id}, '_id', function (err, results) {
+    db.findOne({ '_id':  id}, function (err, results) {
         if(err) {
             return done(null, false, {
                 message: 'Incorrect credentials.'
@@ -42,13 +38,12 @@ passport.use('local', new LocalStrategy({
         } else {
 
             let user = results
-            console.log('the user in deserialization', user);
             done(null, user)
         }
         
       })
    
-  });
+  });//end of deserialazation
 
 
 module.exports = passport;

@@ -8,6 +8,7 @@ import axios from 'axios';
 
 
 
+
 class User extends React.Component {
     constructor(props) {
         super(props);
@@ -21,9 +22,8 @@ class User extends React.Component {
 
     
     componentWillMount() {
-        console.log('mounting...');
+        //GETS USER INFORMATION AND AUTHENTICATES USER
         axios.get('/login').then(res => {
-            console.log('geting the users information', res);
             let userInfo = res.data;
             if(userInfo === '' || userInfo === ' ' || userInfo === false) {
                 window.location = "/?#/";
@@ -32,22 +32,17 @@ class User extends React.Component {
                     theUser: userInfo
                 };
             }
-
         });
     }//end of component will mount
 
-    handleRandom() {
-        console.log('clciked');
-        console.log('The state', this.state)
-    }//end of handle random
+    
 
    
     render() { 
         return (
             <div>
                 <Header />
-                <Link to='/'>Back to </Link>
-                <button onClick={this.handleRandom.bind(this)}>Hello</button>
+                
             </div>
             
 

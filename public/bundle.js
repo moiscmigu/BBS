@@ -13470,6 +13470,8 @@ var _axios = __webpack_require__(43);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _bibleBooks = __webpack_require__(303);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13486,7 +13488,9 @@ var Header = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
 
-        _this.state = {};
+        _this.state = {
+            book: String
+        };
         return _this;
     } //end of constructor
 
@@ -13503,12 +13507,32 @@ var Header = function (_React$Component) {
             console.log('loging out..');
             _axios2.default.delete('/login').then(function (res) {
                 console.log('back from the server with', res);
-                window.location = "/?#/";
+                window.location = "/?#/user";
             });
-        }
+        } //end of handleLogout
+
+    }, {
+        key: 'showBibleBooks',
+        value: function showBibleBooks() {
+            console.log('showing the books');
+            var books = _bibleBooks.bibleBooks;
+            console.log(books);
+
+            return books.map(function (b, id) {
+                return _react2.default.createElement(
+                    'option',
+                    { value: b, key: id },
+                    b
+                );
+            });
+        } //end og showBibleBooks
+
+
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             return _react2.default.createElement(
                 'div',
                 { id: 'UserHeader' },
@@ -13537,8 +13561,60 @@ var Header = function (_React$Component) {
                             ),
                             _react2.default.createElement(
                                 'a',
-                                { className: 'pink-btn', onClick: this.handleNewBook.bind(this) },
+                                { className: 'pink-btn', 'data-toggle': 'modal', 'data-target': '#myModal' },
                                 'New Book'
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'col-md-4 ' },
+                    _react2.default.createElement(
+                        'div',
+                        { id: 'myModal', className: 'modal fade', role: 'dialog' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'modal-dialog' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'modal-content' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'modal-header' },
+                                    _react2.default.createElement(
+                                        'button',
+                                        { type: 'button', className: 'close', 'data-dismiss': 'modal' },
+                                        '\xD7'
+                                    ),
+                                    _react2.default.createElement(
+                                        'h4',
+                                        { className: 'modal-title' },
+                                        'New Book'
+                                    ),
+                                    _react2.default.createElement(
+                                        'label',
+                                        { htmlFor: 'book' },
+                                        'Book:'
+                                    ),
+                                    _react2.default.createElement(
+                                        'select',
+                                        { name: 'book', id: '', onChange: function onChange(event) {
+                                                return _this2.setState({ book: event.target.value });
+                                            } },
+                                        this.showBibleBooks()
+                                    )
+                                ),
+                                _react2.default.createElement('div', { className: 'modal-body' }),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'modal-footer' },
+                                    _react2.default.createElement(
+                                        'button',
+                                        { type: 'button', className: 'btn btn-success', 'data-dismiss': 'modal', id: 'signupSubmit' },
+                                        ' Submit'
+                                    )
+                                )
                             )
                         )
                     )
@@ -31239,9 +31315,8 @@ var User = function (_React$Component) {
         value: function componentWillMount() {
             var _this2 = this;
 
-            console.log('mounting...');
+            //GETS USER INFORMATION AND AUTHENTICATES USER
             _axios2.default.get('/login').then(function (res) {
-                console.log('geting the users information', res);
                 var userInfo = res.data;
                 if (userInfo === '' || userInfo === ' ' || userInfo === false) {
                     window.location = "/?#/";
@@ -31253,13 +31328,6 @@ var User = function (_React$Component) {
             });
         } //end of component will mount
 
-    }, {
-        key: 'handleRandom',
-        value: function handleRandom() {
-            console.log('clciked');
-            console.log('The state', this.state);
-        } //end of handle random
-
 
     }, {
         key: 'render',
@@ -31267,17 +31335,7 @@ var User = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_Header2.default, null),
-                _react2.default.createElement(
-                    _reactRouterDom.Link,
-                    { to: '/' },
-                    'Back to '
-                ),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.handleRandom.bind(this) },
-                    'Hello'
-                )
+                _react2.default.createElement(_Header2.default, null)
             );
         } //end of render
 
@@ -31289,6 +31347,18 @@ var User = function (_React$Component) {
 
 
 exports.default = User;
+
+/***/ }),
+/* 303 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var bibleBooks = exports.bibleBooks = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalm', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'];
 
 /***/ })
 /******/ ]);
