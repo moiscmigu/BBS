@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
     
    
     selectCorrectBook(req.body.book).then(val => {
-
+        console.log('the val', val)
         let bibleOrgUrl = "https://bibles.org/v2/books/eng-GNTD:"+val+"/chapters.js";
         console.log(bibleOrgUrl)
            

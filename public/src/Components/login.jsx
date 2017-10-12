@@ -31,7 +31,6 @@ class Login extends React.Component {
 
         this.props.registerAction(credentials);
 
-
     }//end of handleLogin
 
 

@@ -13523,7 +13523,7 @@ var Header = function (_React$Component) {
             console.log('loging out..');
             _axios2.default.delete('/login').then(function (res) {
                 console.log('back from the server with', res);
-                window.location = "/?#/user";
+                window.location = "/?#/";
             });
         } //end of handleLogout
 
@@ -27206,6 +27206,22 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _axios = __webpack_require__(43);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//will finish updating the database for users new book
+var uploadNewBook = function uploadNewBook(bookInfo) {
+    return new Promise(function (resolve, reject) {
+        _axios2.default.put('/newBook', bookInfo).then(function (res) {
+            console.log('Back from the server with ', res);
+        });
+        resolve("Jojtn");
+    }); //end of promise
+}; //enf of uploadNewBook
+
 
 var newBookReducer = function newBookReducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -27213,7 +27229,12 @@ var newBookReducer = function newBookReducer() {
 
     switch (action.type) {
         case "NEWBOOK":
-            console.log('in the reducer with the action', action.payload.data);
+            var bookChosenInfo = action.payload.data;
+
+            uploadNewBook(bookChosenInfo).then(function (val) {
+                console.log('this is the val', val);
+            });
+
             return state;
         default:
             return state;

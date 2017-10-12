@@ -31,7 +31,7 @@ class Header extends React.Component {
         console.log('loging out..');
         axios.delete('/login').then(res => {
             console.log('back from the server with', res);
-            window.location = "/?#/user";
+            window.location = "/?#/";
         })
     }//end of handleLogout
 
