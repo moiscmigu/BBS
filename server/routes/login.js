@@ -4,7 +4,6 @@ let passport = require('../../strategies/passport.strategy');
 
 
 router.post('/', passport.authenticate('local'), (req, res) => {
-    console.log('login in the user');
     res.send(req.isAuthenticated());
 });// end of post
 

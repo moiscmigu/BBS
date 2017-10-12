@@ -4,17 +4,39 @@ let passport = require('passport');
 let db = require('../server/routes/database/registerDB');
 
 
+
 passport.use('local', new LocalStrategy({
     passReqToCallback: true,
     usernameField: 'email',
-    passwordField: 'password'
+    passwordField: 'password',
+    
   }, function(req, email, password, done) {
-    console.log('in the passport',email);
-
-    db.findOne({ 'email':  email}, 'email', function (err, user) {
+    console.log('in the passport',password);
+    
+    db.findOne({ 'email':  email}, function (err, user) {
         if(err) {
+            done(null, false, {
+                          message: 'Incorrect credentials.'
+                        });
         } else {
-            done(null, user)
+            console.log('the password', password);
+            console.log('the hashed passow0', user)
+            bcrypt.compare(password, user.password, function(err, isMatch) {
+                if (err) {
+                } else {
+                    console.log('the is sthe isMatch', isMatch)
+                    if (isMatch === false) {
+                        done(null, false, {
+                          message: 'Incorrect credentials.'
+                        });
+                    } else if (isMatch) {
+						console.log('the user matches');
+                        done(null, user);
+
+                    }
+                }
+            });
+            
         }
         
       })
