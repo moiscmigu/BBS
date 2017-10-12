@@ -5,15 +5,18 @@ let express = require('express'),
     app = express(),
     path = require('path'), 
     bodyParser = require('body-parser'),
-    register = require('./routes/register'),
-    login = require('./routes/login'),
-    newBook = require('./routes/newBook'),
     session = require('express-session'),
-    passport = require('../strategies/passport.strategy');
+    passport = require('../strategies/passport.strategy'), 
+    port = process.env.PORT;
+
+
+let register = require('./routes/register'),
+    login = require('./routes/login'),
+    newBook = require('./routes/newBook');
     
 
 
-let port = process.env.PORT || 5000;
+
 
 //USES
 

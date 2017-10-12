@@ -30,7 +30,6 @@ ReactDOM.render(
                 <Route path='/user' component={User}/>
             </div>
         </Router>
-        
     </Provider>
     
 

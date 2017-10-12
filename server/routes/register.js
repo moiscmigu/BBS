@@ -1,6 +1,6 @@
 let express = require('express'),
     router = express.Router(),
-    registerDB = require('./registerDB'),
+    registerDB = require('./database/registerDB'),
     bcrypt = require('bcrypt');
 
 
@@ -14,13 +14,15 @@ router.post('/', (req, res) => {
             if (err) {
               console.log('salt err:', err);
               res.sendStatus(400);
-            } else {
+            } 
+            else {
               console.log('salt:', salt);
               bcrypt.hash(password, salt, function(err, hash) {
                 if (err) {
                   console.log('hash err:', err);
                   res.sendStatus(400);
-                } else {
+                } 
+                else {
                   let newUser = {
                     name:name, 
                     password:hash, 

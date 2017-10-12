@@ -7,7 +7,6 @@ const loginReducer = (state=[], action) => {
         case "LOGIN": 
             let access = action.payload.data;
             
-
             if(access === true){
                 window.location = "/?#/user";
             } else {

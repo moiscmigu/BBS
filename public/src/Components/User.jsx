@@ -21,11 +21,18 @@ class User extends React.Component {
     }//end of constructor
 
     
+    
+
+    start() {
+        console.log(this.state.theUser)
+    }
+
+    
     componentWillMount() {
         //GETS USER INFORMATION AND AUTHENTICATES USER
         axios.get('/login').then(res => {
             let userInfo = res.data;
-            if(userInfo === '' || userInfo === ' ' || userInfo === false) {
+            if(userInfo === "Not Authenticated") {
                 window.location = "/?#/";
             } else {
                 this.state = {
@@ -34,17 +41,12 @@ class User extends React.Component {
             }
         });
     }//end of component will mount
-
-
-
-    
-
    
     render() { 
         return (
             <div>
-                <Header />
-               
+                <Header/>
+                <button onClick={this.start.bind(this)} >start</button>
             </div>
             
 

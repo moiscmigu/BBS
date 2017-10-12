@@ -53,6 +53,20 @@ class Header extends React.Component {
         console.log('start', this)
     }//end of start
 
+    componentWillMount() {
+        //GETS USER INFORMATION AND AUTHENTICATES USER
+        axios.get('/login').then(res => {
+            let userInfo = res.data;
+            if(userInfo === "Not Authenticated") {
+                window.location = "/?#/";
+            } else {
+                this.state = {
+                    theUser: userInfo
+                };
+            }
+        });//end axios and then
+    }//end of componentWillMount
+
    
     render() { 
         return (
@@ -71,35 +85,31 @@ class Header extends React.Component {
 
                 <div className="col-md-4 ">           
 
-                <div id="myModal" className="modal fade" role="dialog">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <button type="button" className="close" data-dismiss="modal">&times;</button>
-                                <form onSubmit={this.handleNewBook.bind(this)}>
+                    <div id="myModal" className="modal fade" role="dialog">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <button type="button" className="close" data-dismiss="modal">&times;</button>
+
+                                </div>
+                                <div className="modal-body">
+                               
                                     <h4 className="modal-title" >New Book</h4>
                                     <label htmlFor="book">Book:</label>
                                     <select name="book"  id="" onChange={event => this.setState({book:event.target.value})}>
                                         {this.showBibleBooks()}                   
                                     </select>
                                     <input type="button" value="Start0" onClick={this.start.bind(this)}/>
-                                </form>
                                 
                                 
-                                
-
-                            </div>
-                            <div className="modal-body">
-                            
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className='btn btn-success'  data-dismiss="modal" id="signupSubmit" onClick={this.handleNewBook.bind(this)}> Enter</button>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className='btn btn-success'  data-dismiss="modal" id="signupSubmit" onClick={this.handleNewBook.bind(this)}> Enter</button>
+                                </div>
                             </div>
                         </div>
-                    
                     </div>
                 </div>
-            </div>
             </div>
 
         );

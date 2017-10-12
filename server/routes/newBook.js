@@ -1,25 +1,22 @@
 let express = require('express'),
     request = require('request'),
-    router = express.Router(),
-    username = process.env.BIBLEAPIKEY, //api key for bible.org,
-    password = process.env.PASSWORD,
-    selectCorrectBook = require('./name');
-    
+    selectCorrectBook = require('./functions/name'),
+    router = express.Router();
     
 
+let username = process.env.BIBLEAPIKEY, //api key for bible.org,
+    password = process.env.PASSWORD;//password for api key bible.org
+    
+    
+    
 
 
+//GETS THE DATA WE WANT TO BE ENTERED IN USERS DATABASE
 function filterNewBook(api) {
-    //GETS THE DATA WE WANT TO BE ENTERED IN USERS DATABASE
+    
     let lengthOfBook = api.response.chapters.length - 1;
-    let nameOfBook;
 
     let apiRes = api.response.chapters[0].parent.book.name;
-
-   
-
-
-
 
     let bookInfo = {
         lengthOfChaptersInBook:lengthOfBook,
@@ -35,32 +32,22 @@ router.post('/', (req, res) => {
     
    
     selectCorrectBook(req.body.book).then(val => {
-        console.log('the val', val)
+  
         let bibleOrgUrl = "https://bibles.org/v2/books/eng-GNTD:"+val+"/chapters.js";
-        console.log(bibleOrgUrl)
-           
-         let auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
-         request.get({
-                 url: bibleOrgUrl,
-                 headers: {
-                     "Authorization" : auth
-                 },
-             }, function(err, response, body) {
-     
-     
-         
-     
-         let bookInfo = JSON.parse(body);
-     
-         
-         res.send(filterNewBook(bookInfo));
-         });//end of request to bible.org
-         
-        
-    });
+      
+        let auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
+        request.get({
+                url: bibleOrgUrl,
+                headers: {
+                    "Authorization" : auth
+                },
+            }, function(err, response, body) {
 
-    
-    
+            let bookInfo = JSON.parse(body);
+
+            res.send(filterNewBook(bookInfo));
+         });//end of request to bible.org
+    });//end of then
 });//end of post
 
 
@@ -71,9 +58,9 @@ router.get('/', (req, res) => {
 
 
 router.put('/', (req, res) => {
-    console.log('New book URL hit (PUT)');
+    console.log('New book URL hit (PUT)', req.body);
     res.sendStatus(200);
-})//end of put
+});//end of put
 
 
 module.exports = router;

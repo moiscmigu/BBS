@@ -1,7 +1,7 @@
 let bcrypt = require('bcrypt');
 let LocalStrategy=require('passport-local').Strategy;
 let passport = require('passport');
-let db = require('../server/routes/registerDB');
+let db = require('../server/routes/database/registerDB');
 
 
 passport.use('local', new LocalStrategy({

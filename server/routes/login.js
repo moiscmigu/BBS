@@ -15,8 +15,21 @@ router.delete('/', (req, res) => {
 });
 
 router.get('/', (req, res) => { 
-    console.log('Giving user information');
-    res.send(req.user)
+
+    if(req.isAuthenticated()) {
+        let email = req.user.email,
+            name = req.user.name,
+            id = req.user.id;
+        res.send({email, name, id})
+    } 
+    else {
+        res.send("Not Authenticated")
+    }
+    
+    
+    
+
+    
 });//end of get
 
 module.exports = router;
