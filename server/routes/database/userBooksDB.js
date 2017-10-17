@@ -8,7 +8,8 @@ let userBookSchema = new mongoose.Schema({
     length:Number,
     bookProgress:Number,
     bookFinished:Boolean,
-    bookSummary:Array
+    bookSummary:Array,
+    abb:String
 
 });//end of userSchema
 

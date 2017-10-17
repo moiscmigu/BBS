@@ -1,3 +1,8 @@
+body {
+    font-family: 'Forum', cursive;
+}
+
+
 .wrapper::after {
     clear: both;
 }
@@ -111,4 +116,8 @@ input:focus, input:hover{outline: none;}
 .center {
     text-align: center;
     color:green
+}
+
+.bookAbb {
+    font-family: 'Artifika', serif;
 }

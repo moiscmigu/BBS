@@ -63,7 +63,7 @@ function getResFromAPI(abb) {
 
 
 
-function saveToDB(bookObject, user) {
+function saveToDB(bookObject, user, abb) {
     
 
     return new Promise((resolve, reject) => {
@@ -74,7 +74,8 @@ function saveToDB(bookObject, user) {
         length:userBookData.lengthOfChaptersInBook,
         bookProgress:0,
         bookFinished:false,
-        bookSummary: []
+        bookSummary: [],
+        abb
     };//end of dataToSave
 
 

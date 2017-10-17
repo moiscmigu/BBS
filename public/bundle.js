@@ -31414,19 +31414,14 @@ var User = function (_React$Component) {
 
         _this.state = {
             style: {
-                backgroundColor: 'red'
+                books: false,
+                user: Object
             }
         };
         return _this;
     } //end of constructor
 
-
     _createClass(User, [{
-        key: 'start',
-        value: function start() {
-            console.log(this.state);
-        }
-    }, {
         key: 'componentWillMount',
         value: function componentWillMount() {
             var _this2 = this;
@@ -31434,30 +31429,130 @@ var User = function (_React$Component) {
             //GETS USER INFORMATION AND AUTHENTICATES USER
             _axios2.default.get('/login').then(function (res) {
                 var userInfo = res.data;
-                console.log('userInfgo', userInfo);
                 if (userInfo === "Not Authenticated") {
                     window.location = "/?#/";
                 } else {
                     _axios2.default.get('/newBook').then(function (response) {
-                        console.log('Back from the server with', response);
-                        _this2.state = {
+                        _this2.setState({
                             books: response.data,
-                            theUser: userInfo
-                        };
+                            user: userInfo
+                        });
                     }); //end of axios GET
                 }
             }); //end of axios GET
-
         } //end of component will mount
+
+
+    }, {
+        key: 'showBooks',
+        value: function showBooks() {
+            var books = this.state.books;
+
+            if (books === undefined) {
+                return false;
+            } else {
+                return books.map(function (book, id) {
+                    console.log(book);
+                    var progess = Math.round(book.bookProgress / book.length * 100);
+                    console.log(progess);
+                    return _react2.default.createElement(
+                        'div',
+                        { className: 'card', style: { "width": "20rem", 'display': 'inline-block', 'margin': '2em' }, key: id },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'card-block' },
+                            _react2.default.createElement(
+                                'h1',
+                                { className: 'card-title bookAbb' },
+                                book.abb
+                            ),
+                            _react2.default.createElement(
+                                'p',
+                                { className: 'card-text' },
+                                'Some quick example text to build on the card title and make up the bulk of the card\'s content.'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'label',
+                            { htmlFor: 'progess' },
+                            progess,
+                            '% Completed'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'progress', name: 'progess' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'progress-bar', role: 'progressbar', 'aria-valuenow': '70',
+                                    'aria-valuemin': '0', 'aria-valuemax': '100', style: { "width": progess + "%" } },
+                                _react2.default.createElement(
+                                    'h5',
+                                    { className: 'sr-only' },
+                                    '10% Complete'
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'card-block' },
+                            _react2.default.createElement(
+                                _reactRouterDom.Link,
+                                { to: '#', className: 'card-link' },
+                                'Study'
+                            )
+                        )
+                    );
+                }); //end of return
+            }
+        } //end showBooks
+
 
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_Header2.default, null)
-            );
+
+            if (this.state.books === false) {
+                return false;
+            } else {
+
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(_Header2.default, null),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'container' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-md-12 col-sm-12 col-xs-12' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'progress', name: 'allBooks' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'progress-bar progress-bar-success', role: 'progressbar', 'aria-valuenow': '40',
+                                            'aria-valuemin': '0', 'aria-valuemax': '100', style: { "width": "40%" } },
+                                        '40% Of All Books Completed'
+                                    )
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'row' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'col-md-12 col-sm-12 col-xs-12' },
+                                this.showBooks()
+                            )
+                        )
+                    )
+                ); //end of return
+            } //end of else statement
+
         } //end of render
 
 

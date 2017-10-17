@@ -19,14 +19,9 @@ let username = process.env.BIBLEAPIKEY, //api key for bible.org,
 router.post('/', (req, res) => {
         let user = req.body.user;
         let book = req.body.book;
-
-       
-
-    
-
         newBookFunction.getCorrectAbb(req.body.book).then(abb => {
             newBookFunction.getResFromAPI(abb).then(response => {
-                newBookFunction.saveToDB(response, user).then(results => {
+                newBookFunction.saveToDB(response, user, abb).then(results => {
                     console.log('This is the results', results);
                 });//end of then
                 
