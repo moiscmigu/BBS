@@ -11,7 +11,6 @@ passport.use('local', new LocalStrategy({
     passwordField: 'password',
     
   }, function(req, email, password, done) {
-    console.log('in the passport',password);
     
     db.findOne({ 'email':  email}, function (err, user) {
         if(err) {
@@ -19,18 +18,14 @@ passport.use('local', new LocalStrategy({
                           message: 'Incorrect credentials.'
                         });
         } else {
-            console.log('the password', password);
-            console.log('the hashed passow0', user)
             bcrypt.compare(password, user.password, function(err, isMatch) {
                 if (err) {
                 } else {
-                    console.log('the is sthe isMatch', isMatch)
                     if (isMatch === false) {
                         done(null, false, {
                           message: 'Incorrect credentials.'
                         });
                     } else if (isMatch) {
-						console.log('the user matches');
                         done(null, user);
 
                     }

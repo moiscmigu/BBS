@@ -24,7 +24,7 @@ class User extends React.Component {
     
 
     start() {
-        console.log(this.state.theUser)
+        console.log(this.state)
     }
 
     
@@ -32,21 +32,28 @@ class User extends React.Component {
         //GETS USER INFORMATION AND AUTHENTICATES USER
         axios.get('/login').then(res => {
             let userInfo = res.data;
+            console.log('userInfgo', userInfo)
             if(userInfo === "Not Authenticated") {
                 window.location = "/?#/";
             } else {
-                this.state = {
-                    theUser: userInfo
-                };
+                axios.get('/newBook').then(response => {
+                    console.log('Back from the server with', response)
+                    this.state = {
+                        books: response.data,
+                        theUser:userInfo
+                    };
+                });//end of axios GET
+               
             }
-        });
+        });//end of axios GET
+
+        
     }//end of component will mount
    
     render() { 
         return (
             <div>
                 <Header/>
-                <button onClick={this.start.bind(this)} >start</button>
             </div>
             
 

@@ -1,6 +1,8 @@
 let express = require('express'),
     request = require('request'),
-    selectCorrectBook = require('./functions/name'),
+    newBookFunction = require('./functions/name'),
+    userBookDB = require('./database/userBooksDB'),
+    passport = require('../../strategies/passport.strategy'),
     router = express.Router();
     
 
@@ -11,49 +13,44 @@ let username = process.env.BIBLEAPIKEY, //api key for bible.org,
     
 
 
-//GETS THE DATA WE WANT TO BE ENTERED IN USERS DATABASE
-function filterNewBook(api) {
-    
-    let lengthOfBook = api.response.chapters.length - 1;
 
-    let apiRes = api.response.chapters[0].parent.book.name;
-
-    let bookInfo = {
-        lengthOfChaptersInBook:lengthOfBook,
-        book:apiRes
-    };//end of bookInfo
-
-    return bookInfo;
-
-}//end of filterNewBook
 
 
 router.post('/', (req, res) => {
+        let user = req.body.user;
+        let book = req.body.book;
+
+       
+
     
-   
-    selectCorrectBook(req.body.book).then(val => {
-  
-        let bibleOrgUrl = "https://bibles.org/v2/books/eng-GNTD:"+val+"/chapters.js";
-      
-        let auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
-        request.get({
-                url: bibleOrgUrl,
-                headers: {
-                    "Authorization" : auth
-                },
-            }, function(err, response, body) {
 
-            let bookInfo = JSON.parse(body);
-
-            res.send(filterNewBook(bookInfo));
-         });//end of request to bible.org
+        newBookFunction.getCorrectAbb(req.body.book).then(abb => {
+            newBookFunction.getResFromAPI(abb).then(response => {
+                newBookFunction.saveToDB(response, user).then(results => {
+                    console.log('This is the results', results);
+                });//end of then
+                
+                res.send("Doing something...");
+            });//end of then
+        
     });//end of then
 });//end of post
 
 
 router.get('/', (req, res) => {
-    console.log('New book URL hit (GET)');
-    res.sendStatus(200);
+    let userEmail = req.user.email;
+    console.log('user', userEmail)
+    userBookDB.find({'user': userEmail}, (err, results) => {
+        if(err) {
+            console.log('err', err);
+            res.send(err)
+        } else {
+            console.log('results', results)
+            res.send(results);
+        }
+    });//end of DB Find
+
+    
 });//end of get
 
 

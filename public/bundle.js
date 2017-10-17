@@ -8098,10 +8098,10 @@ var loginAction = exports.loginAction = function loginAction(creds) {
     };
 }; //
 
-var startNewBookAction = exports.startNewBookAction = function startNewBookAction(book) {
+var startNewBookAction = exports.startNewBookAction = function startNewBookAction(book, user) {
 
     console.log('startNew Boo action with the book', book);
-    var request = _axios2.default.post('/newBook', { book: book });
+    var request = _axios2.default.post('/newBook', { book: book, user: user });
 
     return function (dispatch) {
         request.then(function (data) {
@@ -13513,7 +13513,7 @@ var Header = function (_React$Component) {
         value: function handleNewBook() {
             var userBook = this.state.book;
             console.log('The book chosen by the user', this);
-            this.props.startNewBookAction(userBook);
+            this.props.startNewBookAction(userBook, this.state.theUser);
         } //handleNewBook
 
 
@@ -27230,14 +27230,6 @@ var _axios2 = _interopRequireDefault(_axios);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //will finish updating the database for users new book
-var uploadNewBook = function uploadNewBook(bookInfo) {
-    return new Promise(function (resolve, reject) {
-        _axios2.default.put('/newBook', bookInfo).then(function (res) {
-            console.log('Back from the server with ', res);
-        });
-        resolve("Jojtn");
-    }); //end of promise
-}; //enf of uploadNewBook
 
 
 var newBookReducer = function newBookReducer() {
@@ -27246,11 +27238,7 @@ var newBookReducer = function newBookReducer() {
 
     switch (action.type) {
         case "NEWBOOK":
-            var bookChosenInfo = action.payload.data;
-
-            uploadNewBook(bookChosenInfo).then(function (val) {
-                console.log('this is the val', val);
-            });
+            console.log('in the reducer with the data', action.payload.data);
 
             return state;
         default:
@@ -31436,7 +31424,7 @@ var User = function (_React$Component) {
     _createClass(User, [{
         key: 'start',
         value: function start() {
-            console.log(this.state.theUser);
+            console.log(this.state);
         }
     }, {
         key: 'componentWillMount',
@@ -31446,14 +31434,20 @@ var User = function (_React$Component) {
             //GETS USER INFORMATION AND AUTHENTICATES USER
             _axios2.default.get('/login').then(function (res) {
                 var userInfo = res.data;
+                console.log('userInfgo', userInfo);
                 if (userInfo === "Not Authenticated") {
                     window.location = "/?#/";
                 } else {
-                    _this2.state = {
-                        theUser: userInfo
-                    };
+                    _axios2.default.get('/newBook').then(function (response) {
+                        console.log('Back from the server with', response);
+                        _this2.state = {
+                            books: response.data,
+                            theUser: userInfo
+                        };
+                    }); //end of axios GET
                 }
-            });
+            }); //end of axios GET
+
         } //end of component will mount
 
     }, {
@@ -31462,12 +31456,7 @@ var User = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_Header2.default, null),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.start.bind(this) },
-                    'start'
-                )
+                _react2.default.createElement(_Header2.default, null)
             );
         } //end of render
 

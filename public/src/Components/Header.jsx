@@ -21,7 +21,7 @@ class Header extends React.Component {
     handleNewBook() {
         let userBook = this.state.book;
         console.log('The book chosen by the user', this);
-        this.props.startNewBookAction(userBook)
+        this.props.startNewBookAction(userBook, this.state.theUser);
 
 
     }//handleNewBook

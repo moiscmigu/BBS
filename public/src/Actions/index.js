@@ -26,10 +26,10 @@ export const loginAction = (creds) => {
 
 };//
 
-export const startNewBookAction = (book) => {
+export const startNewBookAction = (book, user) => {
     
     console.log('startNew Boo action with the book', book);
-    let request = axios.post('/newBook', {book});
+    let request = axios.post('/newBook', {book, user});
 
     return (dispatch) => {
         request.then(data => {
