@@ -52,7 +52,7 @@ class User extends React.Component {
                     books.map((book, id) => {
                         let progess = Math.round(book.bookProgress/book.length*100)
                         return (
-                            <div className="card" style={{"width": "20rem", 'display': 'inline-block', 'margin': '2em'}} key={id}>
+                            <div className="card" style={{"width": "20rem", 'display': 'inline-block', 'margin': '2em', "border:":"1px solid black"}} key={id}>
                                 <div className="card-block">
                                     <h1 className="card-title bookAbb" >{book.abb}</h1>
                                     <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -65,7 +65,9 @@ class User extends React.Component {
                                     </div>
                                 </div>
                                 <div className="card-block">
-                                    <Link to="/Book" className="card-link" onClick={() => this.editBook(book)}>Study</Link>
+                                    <Link to="/Book" className="card-link" onClick={() => this.editBook(book)}><button className='btn btn-success'  style={{"float": "left"}}>Study</button></Link>
+                                    <button className='btn btn-warning' onClick={() => this.deleteBook(book)} style={{"float": "right"}}>delete</button>
+                                    
                                 </div>
                           </div>
                         )//end of return
@@ -80,6 +82,10 @@ class User extends React.Component {
 
 
     }//end editBook
+    
+    deleteBook(book) {
+        console.log('Deleting this book:' ,book)
+    }//end of delete book
     
    
     render() { 

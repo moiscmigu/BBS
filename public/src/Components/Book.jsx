@@ -13,14 +13,34 @@ class Book extends React.Component {
 
         this.state = {
             book:Object,
-            user:Object
+            user:Object,
+            chapters:[],
+            chapterCount:0,
+            ready:false
         };//end of state
 
     }//end of constructor
 
 
-    start() {
-        console.log('state', this.state)
+    showChapters() {
+        let chapterCount = this.state.chapterCount;
+        let chapters = this.state.book.length;
+        let chatpersArr = this.state.chapters;
+
+        
+        for(let i = 0; i < chapters; i++) {
+            chatpersArr.push([])
+        }
+        
+        
+        return (
+            chatpersArr.map((ch, id) => {
+                chapterCount++;
+                return (
+                    <p key={id}>{this.state.book.book} Chapter:{chapterCount}</p>
+                );
+            })
+        )
     }//end start
 
     componentWillMount() {
@@ -43,21 +63,41 @@ class Book extends React.Component {
             let lastBook = this.props.book.editBookReducer.length -1;
             let book = this.props.book.editBookReducer[lastBook].data.book;
             let user = this.props.book.editBookReducer[lastBook].data.user;
-            this.setState({book, user});
+            this.setState({book, user, ready:true});
         }
     }//end componentWillMount
 
 
     render() {
-        return (
-            <div>
-            <Header/>
-                <div className="container">
-                    <h1>Book</h1>
-                    <button onClick={this.start.bind(this)} >start</button>
+
+        if(!this.state.ready){
+            return false;
+        }
+        else {
+            return (
+                <div>
+                <Header/>
+                    <div className="container">
+                        <div className="row" style={{"textAlign": "center"}}>
+                            <div className="col-md-12">
+                                <h1>{this.state.book.book}</h1>
+                            </div>
+                        </div>
+                        <div className="row" style={{"textAlign": "center"}}>
+                            <div className="col-md-6">
+                                {this.showChapters()}
+                            </div>
+                            <div className="col-md-6">
+                                <textarea name="" id="" cols="50" rows="60"></textarea>
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
+
+        
     }
 }//end class Book
 
