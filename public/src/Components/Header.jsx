@@ -37,7 +37,6 @@ class Header extends React.Component {
 
     showBibleBooks() {
         //displays the option tag for every book in the bible
-        console.log('showing the books');
         let books = bibleBooks;
         return(
                 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {startNewBook} from '../Actions/index';
+import {editBookAction} from '../Actions/index';
 import {Link} from 'react-router-dom';
 import Header from './Header.jsx';
 import axios from 'axios';
@@ -35,7 +35,6 @@ class User extends React.Component {
                     });
                     
                 });//end of axios GET
-
             }
         });//end of axios GET
     }//end of component will mount
@@ -51,38 +50,36 @@ class User extends React.Component {
             else {
                 return (
                     books.map((book, id) => {
-                        console.log(book)
                         let progess = Math.round(book.bookProgress/book.length*100)
-                        console.log(progess)
                         return (
                             <div className="card" style={{"width": "20rem", 'display': 'inline-block', 'margin': '2em'}} key={id}>
-                            <div className="card-block">
-                              <h1 className="card-title bookAbb" >{book.abb}</h1>
-                              <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                            <label htmlFor="progess">{progess}% Completed</label>
-                            <div className="progress" name='progess'>
-                                <div className="progress-bar" role="progressbar" aria-valuenow="70"
-                                aria-valuemin="0" aria-valuemax="100" style={{"width": progess+"%"}}>
-                                    <h5 className="sr-only">10% Complete</h5>
+                                <div className="card-block">
+                                    <h1 className="card-title bookAbb" >{book.abb}</h1>
+                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                 </div>
-                            </div>
-                            
-                            
-                            <div className="card-block">
-                                <Link to="#" className="card-link">Study</Link>
-                            </div>
+                                <label htmlFor="progess">{progess}% Completed</label>
+                                <div className="progress" name='progess'>
+                                    <div className="progress-bar" role="progressbar" aria-valuenow="70"
+                                    aria-valuemin="0" aria-valuemax="100" style={{"width": progess+"%"}}>
+                                        <h5 className="sr-only">10% Complete</h5>
+                                    </div>
+                                </div>
+                                <div className="card-block">
+                                    <Link to="/Book" className="card-link" onClick={() => this.editBook(book)}>Study</Link>
+                                </div>
                           </div>
-                        )
-                    })
+                        )//end of return
+                    })//end of map
                 );//end of return
-            }
-
-            
-        
-
+            }//end of else
     }//end showBooks
     
+    editBook(book) {
+        let user = this.state.user
+        this.props.editBookAction(book, user)
+
+
+    }//end editBook
     
    
     render() { 
@@ -125,4 +122,20 @@ class User extends React.Component {
 }//end of classNameName
 
 
-export default User;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        editBookAction
+    },
+     dispatch)
+}
+
+function mapStateToProps(state) {
+    return {
+        book:state
+    }
+}
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(User);

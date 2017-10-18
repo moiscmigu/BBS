@@ -8069,7 +8069,7 @@ var createTransitionManager = function createTransitionManager() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.startNewBookAction = exports.loginAction = exports.registerAction = undefined;
+exports.editBookAction = exports.startNewBookAction = exports.loginAction = exports.registerAction = undefined;
 
 var _axios = __webpack_require__(30);
 
@@ -8100,16 +8100,22 @@ var loginAction = exports.loginAction = function loginAction(creds) {
 
 var startNewBookAction = exports.startNewBookAction = function startNewBookAction(book, user) {
 
-    console.log('startNew Boo action with the book', book);
     var request = _axios2.default.post('/newBook', { book: book, user: user });
 
     return function (dispatch) {
         request.then(function (data) {
 
-            console.log('back from the server with', data);
             dispatch({ type: "NEWBOOK", payload: data });
         });
     };
+}; //
+
+var editBookAction = exports.editBookAction = function editBookAction(book, user) {
+
+    return {
+        type: "EDITBOOK",
+        payload: { book: book, user: user }
+    }; //end of return
 }; //
 
 /***/ }),
@@ -13531,7 +13537,6 @@ var Header = function (_React$Component) {
         key: 'showBibleBooks',
         value: function showBibleBooks() {
             //displays the option tag for every book in the bible
-            console.log('showing the books');
             var books = _bibleBooks.bibleBooks;
             return books.map(function (b, id) {
                 return _react2.default.createElement(
@@ -13724,6 +13729,10 @@ var _User = __webpack_require__(304);
 
 var _User2 = _interopRequireDefault(_User);
 
+var _Book = __webpack_require__(305);
+
+var _Book2 = _interopRequireDefault(_Book);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = (0, _redux.createStore)(_Reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
@@ -13738,7 +13747,8 @@ _reactDom2.default.render(_react2.default.createElement(
             'div',
             null,
             _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _login2.default, exact: true }),
-            _react2.default.createElement(_reactRouterDom.Route, { path: '/user', component: _User2.default })
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/user', component: _User2.default }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: '/book', component: _Book2.default })
         )
     )
 ), document.getElementById('root'));
@@ -27128,12 +27138,17 @@ var _newBookReducer = __webpack_require__(258);
 
 var _newBookReducer2 = _interopRequireDefault(_newBookReducer);
 
+var _editBookReducer = __webpack_require__(306);
+
+var _editBookReducer2 = _interopRequireDefault(_editBookReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
     registerReducer: _registerReducer2.default,
     loginReducer: _loginReducer2.default,
-    newBookReducer: _newBookReducer2.default
+    newBookReducer: _newBookReducer2.default,
+    editBookReducer: _editBookReducer2.default
 });
 
 /***/ }),
@@ -31446,15 +31461,15 @@ var User = function (_React$Component) {
     }, {
         key: 'showBooks',
         value: function showBooks() {
+            var _this3 = this;
+
             var books = this.state.books;
 
             if (books === undefined) {
                 return false;
             } else {
                 return books.map(function (book, id) {
-                    console.log(book);
                     var progess = Math.round(book.bookProgress / book.length * 100);
-                    console.log(progess);
                     return _react2.default.createElement(
                         'div',
                         { className: 'card', style: { "width": "20rem", 'display': 'inline-block', 'margin': '2em' }, key: id },
@@ -31497,14 +31512,24 @@ var User = function (_React$Component) {
                             { className: 'card-block' },
                             _react2.default.createElement(
                                 _reactRouterDom.Link,
-                                { to: '#', className: 'card-link' },
+                                { to: '/Book', className: 'card-link', onClick: function onClick() {
+                                        return _this3.editBook(book);
+                                    } },
                                 'Study'
                             )
                         )
-                    );
-                }); //end of return
-            }
+                    ); //end of return
+                }) //end of map
+                ; //end of return
+            } //end of else
         } //end showBooks
+
+    }, {
+        key: 'editBook',
+        value: function editBook(book) {
+            var user = this.state.user;
+            this.props.editBookAction(book, user);
+        } //end editBook
 
 
     }, {
@@ -31562,7 +31587,184 @@ var User = function (_React$Component) {
 }(_react2.default.Component); //end of classNameName
 
 
-exports.default = User;
+function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({
+        editBookAction: _index.editBookAction
+    }, dispatch);
+}
+
+function mapStateToProps(state) {
+    return {
+        book: state
+    };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(User);
+
+/***/ }),
+/* 305 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(41);
+
+var _redux = __webpack_require__(25);
+
+var _reactRouterDom = __webpack_require__(42);
+
+var _Header = __webpack_require__(127);
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _axios = __webpack_require__(30);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Book = function (_React$Component) {
+    _inherits(Book, _React$Component);
+
+    function Book(props) {
+        _classCallCheck(this, Book);
+
+        var _this = _possibleConstructorReturn(this, (Book.__proto__ || Object.getPrototypeOf(Book)).call(this, props));
+
+        _this.state = {
+            book: Object,
+            user: Object
+        }; //end of state
+
+        return _this;
+    } //end of constructor
+
+
+    _createClass(Book, [{
+        key: 'start',
+        value: function start() {
+            console.log('state', this.state);
+        } //end start
+
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            //Always gettting the last book out of the array
+
+
+            //AUTHENTICATES THE USER
+            _axios2.default.get('/login').then(function (res) {
+                var userInfo = res.data;
+                if (userInfo === "Not Authenticated") {
+                    window.location = "/?#/";
+                }
+            }); //end of axios GET
+
+            //GETS THE CORRECT BOOK FROM THE REDUCER
+            if (this.props.book.editBookReducer.length - 1 === -1) {
+                window.location = "/?#/user";
+            } else {
+                var lastBook = this.props.book.editBookReducer.length - 1;
+                var book = this.props.book.editBookReducer[lastBook].data.book;
+                var user = this.props.book.editBookReducer[lastBook].data.user;
+                this.setState({ book: book, user: user });
+            }
+        } //end componentWillMount
+
+
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Header2.default, null),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'Book'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.start.bind(this) },
+                        'start'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Book;
+}(_react2.default.Component); //end class Book
+
+
+function mapDispatchToProps(dispatch) {
+    return (0, _redux.bindActionCreators)({}, dispatch);
+}
+
+function mapStateToProps(state) {
+    return {
+        book: state
+    };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Book);
+
+/***/ }),
+/* 306 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _axios = __webpack_require__(30);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var editBookReducer = function editBookReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case "EDITBOOK":
+            var bookData = action.payload;
+            state = [].concat(_toConsumableArray(state), [{ data: bookData }]);
+            return state;
+        default:
+            return state;
+    } //end of switch
+
+}; //end of poleIndexReducer
+
+exports.default = editBookReducer;
 
 /***/ })
 /******/ ]);

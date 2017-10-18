@@ -8,6 +8,7 @@ import {HashRouter as Router, Route, Redirect} from 'react-router-dom';
 
 import Login from './Components/login.jsx';
 import User from './Components/User.jsx';
+import Book from './Components/Book.jsx';
 
 
 
@@ -28,6 +29,8 @@ ReactDOM.render(
             <div>             
                 <Route path='/' component={Login} exact />
                 <Route path='/user' component={User}/>
+                <Route path='/book' component={Book}/>
+                
             </div>
         </Router>
     </Provider>
