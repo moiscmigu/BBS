@@ -31560,7 +31560,7 @@ var User = function (_React$Component) {
                             _react2.default.createElement(
                                 'button',
                                 { className: 'btn btn-warning', onClick: function onClick() {
-                                        return _this3.deleteBook(book);
+                                        return _this3.deleteBook(book, id);
                                     }, style: { "float": "right" } },
                                 'delete'
                             )
@@ -31580,8 +31580,28 @@ var User = function (_React$Component) {
 
     }, {
         key: 'deleteBook',
-        value: function deleteBook(book) {
-            console.log('Deleting this book:', book);
+        value: function deleteBook(book, index) {
+            var _this4 = this;
+
+            var booksArr = this.state.books;
+            booksArr.splice(index, 1);
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }, function () {
+                _this4.setState({ books: booksArr });
+
+                //DELETES BOOK FROM THE DB
+                _axios2.default.delete('/newBook/' + book._id).then(function (res) {
+                    console.log('Back from the server with', res);
+                });
+                swal('Deleted!', 'Your file has been deleted.', 'success');
+            });
         } //end of delete book
 
 

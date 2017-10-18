@@ -34,13 +34,11 @@ router.post('/', (req, res) => {
 
 router.get('/', (req, res) => {
     let userEmail = req.user.email;
-    console.log('user', userEmail)
     userBookDB.find({'user': userEmail}, (err, results) => {
         if(err) {
-            console.log('err', err);
-            res.send(err)
+            console.log('err', err)
+            res.send(err);
         } else {
-            console.log('results', results)
             res.send(results);
         }
     });//end of DB Find
@@ -53,6 +51,19 @@ router.put('/', (req, res) => {
     console.log('New book URL hit (PUT)', req.body);
     res.sendStatus(200);
 });//end of put
+
+router.delete('/:book', (req, res) => {
+    let book = req.params.book;
+    console.log('book id', book)
+    userBookDB.remove({_id:book}, (err) => {
+        if(err) {
+            res.send(err)
+        }
+        else {
+            res.send('Deleted')
+        }
+    });///end db remove
+});//end of delete
 
 
 module.exports = router;

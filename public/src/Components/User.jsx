@@ -42,6 +42,7 @@ class User extends React.Component {
     
     showBooks() {
             let books = this.state.books;
+           
             
             
             if(books === undefined) {
@@ -66,7 +67,7 @@ class User extends React.Component {
                                 </div>
                                 <div className="card-block">
                                     <Link to="/Book" className="card-link" onClick={() => this.editBook(book)}><button className='btn btn-success'  style={{"float": "left"}}>Study</button></Link>
-                                    <button className='btn btn-warning' onClick={() => this.deleteBook(book)} style={{"float": "right"}}>delete</button>
+                                    <button className='btn btn-warning' onClick={() => this.deleteBook(book, id)} style={{"float": "right"}}>delete</button>
                                     
                                 </div>
                           </div>
@@ -83,8 +84,39 @@ class User extends React.Component {
 
     }//end editBook
     
-    deleteBook(book) {
-        console.log('Deleting this book:' ,book)
+    deleteBook(book, index) {
+
+        let booksArr = this.state.books;
+        booksArr.splice(index, 1)
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }, () => {
+            this.setState({books:booksArr})
+
+            //DELETES BOOK FROM THE DB
+            axios.delete('/newBook/'+book._id).then(res => {
+            console.log('Back from the server with', res)
+            })
+            swal(
+              'Deleted!',
+              'Your file has been deleted.',
+              'success'
+            )
+          })   
+
+    
+
+    
+      
+
+
+    
     }//end of delete book
     
    
